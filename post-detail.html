@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>food social</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="post-detail.css">
+    <script src="script.js"></script>
+</head>
+
+<body onresize="handle_resize()">
+    <section id="nav-bar" class="nav-bar">
+        <div class="row">
+            <button class="mobile-btn" onclick='toggle_sidebar()'>
+                <img src="image/menu.svg">
+            </button>
+            <button onclick="document.location.href='index.html'" class="home-btn">
+                <img src="image/home.svg">
+            </button>
+        </div>
+        <input type="text" placeholder="search" class="search-bar">
+        <div class="row">
+            <button class="nav-login-btn" onclick="window.location.href='login.html'">login</button>
+            <img src="image/user_default.svg" alt="">
+        </div>
+    </section>
+    <div class="nav-bar-padding"></div>
+    <div class="side-bar" id="side-bar">
+        <button class="side-btn favorite-btn">favorite</button>
+        <button class="side-btn discoveries-btn">discoveries</button>
+    </div>
+    <div class="main-content">
+        <div class="row">
+            <img src="image/donuts.avif" width="40px" height="40px" style="border-radius: 50%;">
+            <div>
+                <span style="font-size: 18px;">donuts</span>
+                <div class="row">
+                    <span>maria</span>
+                    <span>15 minutes ago</span>
+                </div>
+            </div>
+        </div>
+        <h1>my first attempt at making this dish</h1>
+        <div class="row" style="margin-top: 12px;margin-bottom: 12px;">
+            <span class="tags">attempts</span>
+            <span class="tags">first attempts</span>
+        </div>
+        <div style="display: flex;">
+            <img src="image/donuts.avif" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
+        </div>
+        <div class="row" style="margin-top: 12px;">
+            <button class="row bottom-btn like-btn" >
+                <img src="image/like.svg">
+                <span>23</span>
+            </button>
+            <button class="row bottom-btn dislike-btn">
+                <img src="image/dislike.svg">
+                <span>12</span>
+            </button>
+        </div>
+        <div class="row">
+            <textarea type="text" class="add-comment" placeholder="share your thought here" maxlength="550"></textarea>
+            <button class="comment-btn">
+                <img src="image/send.svg">
+            </button>
+        </div>
+        <div style="margin-top: 14px;">
+            <div class="comment">
+                <div class="row">
+                    <img src="image/ramen.webp" width="30px" height="30px" style="border-radius: 50%;"></img>
+                    <span>phuc</span>
+                    <span>12 minutes ago</span>
+                </div>
+                <span style="margin-top: 6px;display: block;">that's a nice first attempt.Keep on trying.I'm sure you'll get better quickly</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

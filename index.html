@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food social</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="post.css">
+    <script src="script.js"></script>
+    <script src="index.js" type="module"></script>
+</head>
+<body onresize="handle_resize()">
+    <section id="nav-bar" class="nav-bar">
+        <div class="row">
+            <button class="mobile-btn" onclick='toggle_sidebar()'>
+                <img src="image/menu.svg">
+            </button>
+            <button>
+                <img src="image/home.svg" class="home-btn">
+            </button>
+        </div>
+        <input type="text" placeholder="search" class="search-bar">
+        <div class="row">
+            <button class="nav-login-btn" onclick="window.location.href='login.html'" id="login-btn">login</button>
+            <span style="display: flex;align-items: center;" id="username"></span>
+            <img src="image/user_default.svg" alt="" id="user-profile" width="40px" max-height="100%" style="border-radius: 50%;">
+        </div>
+    </section>
+    
+    <div style="height: 50px;">
+        <!--placeholder to prevent the nav bar from clipping into content-->
+    </div>
+    <div class="side-bar" id="side-bar">
+        <button class="side-btn favorite-btn">favorite</button>
+        <button class="side-btn discoveries-btn">discoveries</button>
+    </div>
+    <div class="main-content" id="main-content">
+        <div class="post" id="">
+            <div class="post-info">
+                <div class="row">
+                    <h3>donuts</h3>
+                    <span>15 minutes ago</span>
+                </div>
+                <div class="row">
+                    <button class="cook-btn">let's cook</button>
+                </div>
+            </div>
+            <h1 class="post-tilte">my first attempt at this dish</h1>
+            <div class="post-frame">
+                <img src="image/donuts.avif">
+            </div>
+            <div class="post-btn-rows">
+                <button class="post-btn">31 likes</button>
+                <button class="center-btn post-btn comment-btn">23</button>
+                <button class="center-btn post-btn share-btn">share</button>
+            </div>
+        </div>
+        <div class="post" id="">
+            <div class="post-info">
+                <div class="row">
+                    <h3>donuts</h3>
+                    <span>15 minutes ago</span>
+                </div>
+                <div class="row">
+                    <button class="cook-btn">let's cook</button>
+                </div>
+            </div>
+            <h1 class="post-tilte">my first attempt at this dish</h1>
+            <div class="post-frame">
+                <img src="image/donuts.avif">
+            </div>
+            <div class="post-btn-rows">
+                <button class="post-btn">31 likes</button>
+                <button class="center-btn post-btn comment-btn">23</button>
+                <button class="center-btn post-btn share-btn">share</button>
+            </div>
+        </div>
+        <div class="post">
+            <div class="post-info">
+                <div class="row">
+                    <h3>donuts</h3>
+                    <span>15 minutes ago</span>
+                </div>
+                <div class="row">
+                    <button class="cook-btn">let's cook</button>
+                </div>
+            </div>
+            <h1 class="post-tilte">my first attempt at this dish</h1>
+            <div class="post-frame">
+                <img src="image/donuts.avif">
+            </div>
+            <div class="post-btn-rows">
+                <button class="post-btn">31 likes</button>
+                <button class="center-btn post-btn comment-btn">23</button>
+                <button class="center-btn post-btn share-btn">share</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

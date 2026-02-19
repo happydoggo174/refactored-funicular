@@ -1,0 +1,87 @@
+.post{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    border-bottom: 1px solid black;
+}
+.post:hover{
+    background-color: wheat;
+    border-radius: 14px;
+}
+.post-frame{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.post img{
+    max-height: 60vh;
+    max-width: 100%;
+}
+.post-btn-rows{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 24px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+}
+.post-btn{
+    padding: 8px;
+    border-radius: 14px;
+    margin-right: 12px;
+    font-size: 16px;
+    text-align: center;
+}
+.post-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+.cook-btn{
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 14px;
+    background-color: blue;
+    color: white;
+}
+.cook-btn:hover{
+    background-color: green;
+}
+
+.share-btn:hover{
+    content: "";
+    background-color: green;
+}
+.share-btn:hover::after{
+    content: url("image/share.svg")
+};
+.comment-btn{
+    content: "";
+}
+.comment-btn:hover{
+    background-color: blue;
+    content: "";
+}
+.comment-btn::after{
+    content: url("image/comment.svg");
+}
+.post-tilte{
+    margin-left: 24px;
+}
+@media screen and (max-width:670px){
+    .post img{
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+    .post-info{
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+    .post-tilte{
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+}

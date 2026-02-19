@@ -1,0 +1,33 @@
+.tags{
+    padding: 4px;
+    background-color: wheat;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+.comment{
+    margin-bottom: 12px;
+}
+.add-comment{
+    margin-top: 12px;
+    padding: 6px;
+    border-radius: 16px;
+    font-size: 18px;
+    flex-grow: 1;
+    field-sizing: content;
+}
+.comment-btn{
+    padding: 4px;
+    border-radius: 18px;
+    background-color: blue;
+}
+.bottom-btn{
+    align-items: center;
+    border-radius: 8px;
+    padding: 4px;
+}
+.like-btn:hover{
+    background-color: green;
+}
+.dislike-btn:hover{
+    background-color: red;
+}
