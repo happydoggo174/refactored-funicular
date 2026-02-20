@@ -1,5 +1,5 @@
 //require api.js,dompurifier to be included first
-import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js/+esm';
+import DOMPurify from './libs/dompurify 3.3.1';
 import {get_post,get_user_info} from "./api.js";
 function set_user_info(info){
     document.getElementById('login-btn').style.display='none';

@@ -4,7 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import uvicorn
+import os
 app=FastAPI()
+@app.get('/libs/{filename}')
+def get_library(filename:str):
+    filename=os.path.basename(filename)#prevent path traversal
+    return FileResponse("libs/"+filename,media_type="application/javascript")
 app.mount('/',StaticFiles(directory="./"))
 app.add_middleware(CORSMiddleware,allow_methods=['*'],allow_origins=['*'])
 @app.get('')
