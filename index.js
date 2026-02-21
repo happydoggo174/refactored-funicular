@@ -68,33 +68,49 @@ function load_dishes(dishes){
     let output="";
     dishes.forEach((dish)=>{
         output+=`
-            <div class="post" id="">
-            <div class="post-info">
-                <div class="row">
-                    <h3>${html_escape(dish["group"])}</h3>
-                    <span>${time_to_string(parseInt(dish["time"])).concat('ago')}</span>
+            <div class="post" id="${"dish:".concat(parseInt(dish["id"]).toString())}">
+                <div class="post-info">
+                    <div class="row">
+                        <h3>${html_escape(dish["group"])}</h3>
+                        <span>${time_to_string(parseInt(dish["time"])).concat('ago')}</span>
+                    </div>
+                    <div class="row">
+                        <button class="cook-btn">let's cook</button>
+                    </div>
                 </div>
-                <div class="row">
-                    <button class="cook-btn">let's cook</button>
+                <h1 class="post-tilte">${html_escape(dish['tilte'])}</h1>
+                <div class="post-frame">
+                    <img src="${html_escape(dish['image'])}">
+                </div>
+                <div class="post-btn-rows">
+                    <button class="post-btn">${parseInt(dish['likes'])} likes</button>
+                    <button class="center-btn post-btn comment-btn">${parseInt(dish['comments'])}</button>
+                    <button class="center-btn post-btn share-btn">share</button>
                 </div>
             </div>
-            <h1 class="post-tilte">${html_escape(dish['tilte'])}</h1>
-            <div class="post-frame">
-                <img src="${html_escape(dish['image'])}">
-            </div>
-            <div class="post-btn-rows">
-                <button class="post-btn">${parseInt(dish['likes'])} likes</button>
-                <button class="center-btn post-btn comment-btn">${parseInt(dish['comments'])}</button>
-                <button class="center-btn post-btn share-btn">share</button>
-            </div>
-        </div>
         `;
     });
-    document.getElementById('main-content').innerHTML=output;
+    const main_content=document.getElementById('main-content');
+    main_content.innerHTML=output;
+    main_content.childNodes.forEach(div=>{
+        if(div.tagName=="DIV"){
+            div.addEventListener('click',(evt)=>{
+                let target=evt.target;
+                while(!target.classList.contains("post")){
+                    target=target.parentNode;
+                }
+                const id_string=target.id;
+                const id=parseInt(id_string.split(':')[1]);
+                window.location.href=`http://127.0.0.1:8000/post/detail/${id}`;
+            });
+        }
+    });
 }
 document.addEventListener('DOMContentLoaded',async (evt)=>{
+    console.log("dom loaded");
     const dishes=await get_post();
-    if(dishes!=null){
+    if(dishes!=null){   
+        console.log("loading dishes");
         load_dishes(dishes);
     }
     const info=await get_user_info();

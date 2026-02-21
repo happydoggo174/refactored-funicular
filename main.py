@@ -12,7 +12,6 @@ def get_library(filename:str):
     return FileResponse("libs/"+filename,media_type="application/javascript")
 app.mount('/',StaticFiles(directory="./"))
 app.add_middleware(CORSMiddleware,allow_methods=['*'],allow_origins=['*'])
-@app.get('')
-def root():return FileResponse("index.html")
+
 print("link:http://127.0.0.1:9000/index.html")
 uvicorn.run(app,port=9000)
