@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food social</title>
+    <script src="register.js" type="module"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="login.css">
-    <script src="login.js" type="module"></script>
+    <link rel="stylesheet" href="register.css">
+    <title>food social</title>
 </head>
-
 <body>
     <img id="bg" width="100%" height="100%" style=" position: absolute;z-index: -1;">
     <section id="nav-bar" class="nav-bar">
@@ -22,13 +20,18 @@
             </button>
         </div>
         <div class="row">
-            <button class="nav-login-btn" onclick="window.location.href='index.html'" type="button" id="nav-login-btn">login</button>
+            <button class="nav-login-btn" onclick="window.location.href='index.html'" type="button">login</button>
             <img src="image/user_default.svg" alt="" id="user-profile">
         </div>
     </section>
-    <div style="display: flex;justify-content: center;">
-        <div style="background-color: white;border-radius: 14px;margin-top: 40vh;padding: 14px;">
+    <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
+        <div id="top-padding" class="form-padding">
+            <img src="" alt="" id="profile-img" style="display: none;">
             <form action="">
+                <div class="row" style="margin-bottom: 14px;">
+                    <span>choose profile</span>
+                    <input type="file" id="profile-field" accept="image/*">
+                </div>
                 <div class="row">
                     <span style="margin-right: 14px;">username</span>
                     <input type="text" name="" id="username" style="border-radius: 8px;flex-grow: 1;height: 31px;font-size: 16px;">
@@ -40,12 +43,10 @@
                         <img src="image/eye_closed.svg" id="pass_img">
                     </button>
                 </div>
-                <button class="login-btn" id="login-btn-main" type="button">login</button>
-                <button class="register-btn" type="button" id="register-btn">register</button>
+                <button class="register-btn" id="register-btn" type="button">register</button>
+                <button class="login-btn" type="button" id="login-btn-main">back to login</button>
             </form>
         </div>
     </div>
-
 </body>
-
 </html>

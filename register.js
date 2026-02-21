@@ -1,5 +1,5 @@
-import { check_login,GITHUB_URL } from "./api.js";
-import { toggle_sidebar } from "./script.js";
+import { register,GITHUB_URL } from "./api.js";
+import { load_navbar } from "./script.js";
 import { show_dialog } from "./tool.js";
 const login_bg=["image/ramen.webp","image/shrimp_salad.webp","image/hotpot.webp"];
 const login_bg_mobile=["image/ramen-mobile.webp","image/shrimp_salad-mobile.webp","image/hotpot-mobile.webp"];
@@ -60,19 +60,21 @@ function naughtyButtonHandler(evt) {
     // Apply new position and rotation
     btn.style.transform = `translate(${offsetX}px, ${offsetY}px) rotate(${rotation}deg)`;
 }
-async function handle_login(evt){
+async function handle_register(evt){
     const username=document.getElementById('username').value;
     const password=document.getElementById('pass_field').value;
+    const filename=document.getElementById('profile-field').value;
     if(username=="" || password==""){
         naughtyButtonHandler(evt);
     }else{
         evt.target.style.transform='translate(0px,0px)';
         evt.target.style.rotate='0px'
         if(evt.type=='click'){
-            if(!await check_login(username,password)){
-                show_dialog("wrong username or password");
+            if(!await register(username,password,filename)){
+                show_dialog("this username had been taken");
             }else{
-                window.location.href=GITHUB_URL.concat('index.html');
+                show_dialog("register successfully");
+                window.location.href=GITHUB_URL.concat('login.html');
             }
         }
     }
@@ -90,11 +92,28 @@ function toggle_pass_field(){
 document.addEventListener('DOMContentLoaded',async(ev)=>{
     switch_image();
     document.getElementById('pass_btn').addEventListener('click',toggle_pass_field);
-    const login_btn=document.getElementById('login-btn-main');
-    login_btn.addEventListener('mouseenter',handle_login);
-    login_btn.addEventListener('click',handle_login);
-    const register_btn=document.getElementById("register-btn");
-    register_btn.addEventListener('click',(evt)=>{
-        window.location.href=GITHUB_URL.concat("register.html");
+    document.getElementById('login-btn-main').addEventListener('click',(evt)=>{
+        window.location.href=GITHUB_URL.concat("login.html");
+    });
+    const register_btn=document.getElementById('register-btn');
+    register_btn.addEventListener('mouseenter',handle_register);
+    register_btn.addEventListener('click',handle_register);
+    const profile_field=document.getElementById('profile-field');
+    profile_field.addEventListener('change',(evt)=>{
+        const files=evt.target.files;
+        if(files==null || files.length==0){
+            return;
+        }
+        const display=document.getElementById("profile-img");
+        if(display.style.display=='none'){
+            display.style.display='flex';
+        }
+        const reader=new FileReader();
+        reader.onload=function(evt){
+            display.src=evt.target.result;
+        }
+        reader.readAsDataURL(files[0]);
+        const padding=document.getElementById('top-padding');
+        padding.style.marginTop='10vh';
     });
 });

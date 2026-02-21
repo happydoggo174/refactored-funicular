@@ -1,18 +1,7 @@
 //require api.js,dompurifier to be included first
 import DOMPurify from './libs/dompurify 3.3.1';
-import {get_post,get_user_info} from "./api.js";
-function set_user_info(info){
-    document.getElementById('login-btn').style.display='none';
-    const profile=document.getElementById('user-profile');
-    profile.src=info["profile"];
-    document.getElementById('username').innerText=info['name'];
-    profile.addEventListener('mouseenter',(evt)=>{
-        document.getElementById('username').style.display='flex';
-    });
-    profile.addEventListener('mouseleave',(evt)=>{
-        document.getElementById('username').style.display='none';
-    });
-}
+import {get_post} from "./api.js";
+import { load_navbar,handle_resize } from './script.js';
 function get_now(){
     return Math.floor((new Date().getTime())/1000);
 }
@@ -101,20 +90,16 @@ function load_dishes(dishes){
                 }
                 const id_string=target.id;
                 const id=parseInt(id_string.split(':')[1]);
-                window.location.href=`http://127.0.0.1:8000/post/detail/${id}`;
+                window.location.href=`http://127.0.0.1:9000/post/detail/${id}`;
             });
         }
     });
 }
 document.addEventListener('DOMContentLoaded',async (evt)=>{
-    console.log("dom loaded");
+    await load_navbar();
     const dishes=await get_post();
     if(dishes!=null){   
-        console.log("loading dishes");
         load_dishes(dishes);
     }
-    const info=await get_user_info();
-    if(info!=null){
-        set_user_info(info);
-    }
 });
+document.addEventListener('resize',handle_resize)

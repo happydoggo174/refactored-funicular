@@ -6,13 +6,12 @@
     <title>Food social</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="post.css">
-    <script src="script.js"></script>
     <script src="index.js" type="module"></script>
 </head>
-<body onresize="handle_resize()">
+<body>
     <section id="nav-bar" class="nav-bar">
         <div class="row">
-            <button class="mobile-btn" onclick='toggle_sidebar()'>
+            <button class="mobile-btn" id="menu_btn">
                 <img src="image/menu.svg">
             </button>
             <button>
@@ -21,8 +20,8 @@
         </div>
         <input type="text" placeholder="search" class="search-bar">
         <div class="row">
-            <button class="nav-login-btn" onclick="window.location.href='login.html'" id="login-btn">login</button>
-            <span style="display: flex;align-items: center;" id="username"></span>
+            <button class="nav-login-btn" onclick="window.location.href='login.html'" id="nav-login-btn">login</button>
+            <span style="display: flex;align-items: center;" id="nav-username"></span>
             <img src="image/user_default.svg" alt="" id="user-profile" width="40px" max-height="100%" style="border-radius: 50%;">
         </div>
     </section>

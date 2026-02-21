@@ -104,6 +104,7 @@
 }
 .favorite-btn:hover::after{
     content: url("image/favorite.svg");
+    margin-left: 8px;
 }
 .discoveries-btn:hover{
     background-color: rgb(28, 120, 173);
@@ -116,6 +117,7 @@
 }
 .discoveries-btn:hover::after{
     content: url("image/star.svg");
+    margin-left: 8px;
 }
 .home-btn:hover{
     background-color: white;

@@ -10,6 +10,9 @@ app=FastAPI()
 def get_library(filename:str):
     filename=os.path.basename(filename)#prevent path traversal
     return FileResponse("libs/"+filename,media_type="application/javascript")
+@app.get("/post/detail/{post_id}")
+async def get_post_detail():
+    return FileResponse("post-detail.html")
 app.mount('/',StaticFiles(directory="./"))
 app.add_middleware(CORSMiddleware,allow_methods=['*'],allow_origins=['*'])
 

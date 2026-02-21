@@ -47,3 +47,25 @@ export function time_to_string(time){
     }
     return output;
 }
+export function show_dialog(msg){
+    document.getElementsByTagName('body').item(0).innerHTML+=`
+        <div style="display:flex;justify-content:center;align-items:center;" id="error_dialog">
+            <div style="position:fixed;
+            z-index:1;
+            padding:18px;
+            border-radius:24px;
+            border:2px solid black;
+            background-color:white;">
+                <span style="display:block;">${"error: ".concat(msg)}</span> 
+                <div style="display:flex;flex-direction:row;justify-content:center;">
+                    <button 
+                        onclick="document.getElementById('error_dialog').remove()" 
+                        style="padding:8px;
+                        border-radius:12px;
+                        margin-top:12px;
+                        width:100%">ok</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
