@@ -76,7 +76,7 @@
 .row{
     display: flex;
     flex-direction: row;
-    gap: 14px;
+    gap:14px;
 }
 .nav-login-btn{
     color: white;

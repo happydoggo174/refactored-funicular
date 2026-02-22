@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food social</title>
+    <base href="http://127.0.0.1:9000">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account_page.css">
+    <script src="account_page.js" type="module"></script>
+</head>
+
+<body>
+    <section id="nav-bar" class="nav-bar">
+        <div class="row">
+            <button class="mobile-btn" id="menu_btn">
+                <img src="image/menu.svg">
+            </button>
+            <button>
+                <img src="image/home.svg" class="home-btn" onclick="window.location.href='index.html'">
+            </button>
+        </div>
+        <input type="text" placeholder="search" class="search-bar">
+    </section>
+
+    <div style="height: 50px;">
+        <!--placeholder to prevent the nav bar from clipping into content-->
+    </div>
+    <div class="side-bar" id="side-bar">
+        <button class="side-btn favorite-btn">favorite</button>
+        <button class="side-btn discoveries-btn">discoveries</button>
+    </div>
+    <div class="main-content">
+        <div class="id-card">
+            <img src="" id="user-profile-big" max-height="100%">
+            <div
+                style="display: flex;flex-direction: column;justify-content: space-around;flex-grow: 1;margin-left: 12px;">
+                <div class="row">
+                    <div style="display: flex;flex-direction: column;flex-grow: 1;margin-right: 12px;">
+                        <div class="row" style="justify-content: space-between;">
+                            <h1 id="username"></h1>
+                            <button style="border-radius: 50%;padding: 8px;">
+                                <img src="image/edit.svg" alt="">
+                            </button>
+                        </div>
+                        <button id="change-password-btn">
+                            change password
+                            <img src="image/lock.svg" alt="" id="lock-icon">
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <span class="stats-banner">stats</span>
+                    <div class="stats-row" id="stats-row">
+                        <span>122 likes</span>
+                        <span>67 dislikes</span>
+                        <span>9 posts</span>
+                        <span>22 comments</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="description-banner">Description</span>
+                    <div class="description-content" id="description-content">a casual housewife who's open to cooking to letting off steam every
+                        weekend.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

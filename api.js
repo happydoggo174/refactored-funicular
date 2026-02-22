@@ -83,16 +83,12 @@ export async function get_post_detail(post_id) {
         return null;
     }
 }
-export async function get_post_comments(post_id){
-    return [
-        {"name":"phuc","time":1771498492,
-        "content":"that's a nice first attempt.Keep on trying.I'm sure you'll get better quickly",
-        "profile":"image/ramen.webp"}
-    ];
+function get_post_id(){
+    const parts=window.location.href.split("/");
+    return parts[parts.length-1];
 }
 export async function like_post(){
-    const parts=window.location.href.split("/");
-    const post_id=parts[parts.length-1];
+    const post_id=get_post_id();
     const url=new URL(VERCEL_URL.concat("/post/like"));
     url.searchParams.append('post_id',post_id);
     try{
@@ -104,8 +100,7 @@ export async function like_post(){
     return true;
 }
 export async function dislike_post(){
-    const parts=window.location.href.split("/");
-    const post_id=parts[parts.length-1];
+    const post_id=get_post_id();
     const url=new URL(VERCEL_URL.concat("/post/dislike"));
     url.searchParams.append('post_id',post_id);
     try{
@@ -114,5 +109,44 @@ export async function dislike_post(){
     }catch{
         return false;
     }
+    return true;
+}
+export async function get_post_comments() {
+    const post_id=get_post_id();
+    const url=new URL(VERCEL_URL.concat("/post/comment"));
+    url.searchParams.append('post_id',post_id);
+    try{
+        const resp=await fetch(url);
+        if(!resp.ok){
+            return null;
+        }
+        return await resp.json();
+    }catch{
+        return null;
+    }
+}
+export async function add_post_comments(content) {
+    console.log("adding comments");
+    const post_id=get_post_id();
+    const url=new URL(VERCEL_URL.concat("/post/comment"));
+    url.searchParams.append('post_id',post_id);
+    const form_data=new FormData();
+    form_data.append('content',content);
+    try{
+        const resp=await fetch(
+            url,
+            {
+                method:"POST",
+                body:form_data
+            }
+        );
+        if(!resp.ok){
+            return false;
+        }
+    }catch(e){
+        console.log("error posting comment",e);
+        return false;
+    }
+    console.log('added');
     return true;
 }

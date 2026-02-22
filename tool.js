@@ -1,3 +1,4 @@
+
 function get_now(){
     return Math.floor((new Date().getTime())/1000);
 }
@@ -48,7 +49,12 @@ export function time_to_string(time){
     return output;
 }
 export function show_dialog(msg){
-    document.getElementsByTagName('body').item(0).innerHTML+=`
+    const dialog=document.createElement("div");
+    dialog.id = "error_dialog";
+    dialog.style.display = "flex";
+    dialog.style.justifyContent = "center";
+    dialog.style.alignItems = "center";
+    dialog.innerHTML=`
         <div style="display:flex;justify-content:center;align-items:center;" id="error_dialog">
             <div style="position:fixed;
             z-index:1;
@@ -68,4 +74,5 @@ export function show_dialog(msg){
             </div>
         </div>
     `;
+    document.getElementsByTagName('body').item(0).appendChild(dialog);
 }

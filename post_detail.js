@@ -1,14 +1,34 @@
-import { dislike_post, like_post,get_post_detail } from "./api.js";
+import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
 import DOMPurify from './libs/dompurify 3.3.1';
-function render_post(data){
+let liked=false;
+let disliked=false;
+let like_btn=null;
+let dislike_btn=null;
+function render_post(data,comments){
     let tags="";
-    let comments="";
+    let comments_string="";
+    liked=data["liked"];
+    disliked=data["disliked"];
     data["tags"].forEach(tag => {
         tags=tags.concat(`<span class='tags'>${DOMPurify.sanitize(tag)}</span>`);
     });
+    if(comments!=null){
+        comments.forEach((comment)=>{
+            console.log("building comment string");
+            comments_string=comments_string.concat(`
+                <div class="comment">
+                    <div class="row" style="margin-bottom:12px;">
+                        <img src="${comment["profile"]}" width="30px" height="30px" style="border-radius:50%"></img>
+                        <span>${DOMPurify.sanitize(comment["user"])}</span>
+                    </div>
+                    <span>${DOMPurify.sanitize(comment["content"])}</span>
+                </div>
+            `);
+        });
+    }
     return `
         <div class="row">
             <img src="${data['group_image']}" width="40px" height="40px" style="border-radius: 50%;">
@@ -27,57 +47,90 @@ function render_post(data){
         <div style="display: flex;">
             <img src="${data["image"]}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
         </div>
+        <span class="post-body">${data["body"]!=undefined?DOMPurify.sanitize(data["body"]):""}</span>
         <div class="row" style="margin-top: 12px;">
             <button class="row bottom-btn like-btn" id='like-btn'>
-                <img src="image/like.svg">
+                <img src="${liked?"image/like_filled.svg":"image/like.svg"}" id="like-img">
                 <span>${parseInt(data["likes"])}</span>
             </button>
             <button class="row bottom-btn dislike-btn" id='dislike-btn'>
-                <img src="image/dislike.svg">
+                <img src="${disliked?"image/dislike_filled.svg":"image/dislike.svg"}" id="dislike-img">
                 <span>${parseInt(data["dislikes"])}</span>
             </button>
         </div>
         <div class="row">
-            <textarea type="text" class="add-comment" placeholder="share your thought here" maxlength="550"></textarea>
-            <button class="comment-btn">
+            <textarea type="text" class="add-comment" placeholder="share your thought here" 
+            maxlength="550" id="comment-field"></textarea>
+            <button class="comment-btn" id="add-comment-btn" type="button">
                 <img src="image/send.svg">
             </button>
         </div>
-        <div style="margin-top: 14px;">${comments}</div>
+        <div style="margin-top: 14px;">${comments_string}</div>
     `;
 }
 async function render_self(){
     const params=window.location.href.split("/");
     const post_id=params[params.length-1];
-    const info=await get_post_detail(post_id);
+    const [info,comments]=await Promise.all([get_post_detail(post_id),get_post_comments()]);
     if(info==null){
         show_dialog("error loading post");
         return;
     }
-    document.getElementById('main-content').innerHTML=render_post(info);
+    document.getElementById('main-content').innerHTML=render_post(info,comments);
+}
+function add_span_value(span,val){
+    const text=span.innerText;
+    const value=parseFloat(text)+val;
+    span.innerText=value.toString();
+}
+async function post_comment(evt){
+    try{
+        evt.preventDefault();  
+        evt.stopPropagation();  
+        const content=document.getElementById('comment-field').value;
+        if(content==""){
+            return show_dialog("please enter comment before posting");
+        }
+        if(!await add_post_comments(content)){
+            show_dialog("can't post comments");
+        }
+    }catch{}
+}
+async function handle_like(){
+    if(liked){return;}
+    if(!await like_post()){
+        return show_dialog("can't like this post");
+    }
+    liked=true;
+    if(disliked){
+        add_span_value(dislike_btn.getElementsByTagName('span').item(0),-1);
+        document.getElementById("dislike-img").src="image/dislike.svg";
+    }
+    disliked=false;
+    add_span_value(like_btn.getElementsByTagName('span').item(0),1);
+    document.getElementById('like-img').src="image/like_filled.svg";
+}
+async function handle_dislike(){
+    if(disliked){return;}
+    if(!await dislike_post()){
+        return show_dialog("can't dislike this post");
+    }
+    disliked=true;
+    if(liked){
+        add_span_value(like_btn.getElementsByTagName('span').item(0),-1);
+        document.getElementById("like-img").src="image/like.svg";
+    }
+    liked=false;
+    add_span_value(dislike_btn.getElementsByTagName('span').item(0),1);
+    document.getElementById("dislike-img").src="image/dislike_filled.svg";
 }
 document.addEventListener("DOMContentLoaded",async (evt)=>{
     await render_self();
-    const like_btn=document.getElementById('like-btn');
-    const dislike_btn=document.getElementById('dislike-btn');
-    like_btn.addEventListener('click',async (evt)=>{
-        if(!await like_post()){
-            show_dialog("can't like this post");
-            return;
-        }
-        const count_text=like_btn.getElementsByTagName('span').item(0);
-        const like=parseInt(count_text.innerText)+1;
-        count_text.innerText=like.toString();
-    });
-    dislike_btn.addEventListener('click',async (evt)=>{
-        if(!await dislike_post()){
-            show_dialog("can't dislike this post");
-            return;
-        }
-        const count_text=dislike_btn.getElementsByTagName('span').item(0);
-        const dislike=parseInt(count_text.innerText)+1;
-        count_text.innerText=dislike.toString();
-    });
+    document.getElementById('add-comment-btn').addEventListener('click',post_comment);
+    like_btn=document.getElementById('like-btn');
+    dislike_btn=document.getElementById('dislike-btn');
+    like_btn.addEventListener('click',handle_like);
+    dislike_btn.addEventListener('click',handle_dislike);
     await load_navbar();
 });
 document.addEventListener('resize',handle_resize);

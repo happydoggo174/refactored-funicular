@@ -31,3 +31,8 @@
 .dislike-btn:hover{
     background-color: red;
 }
+.post-body{
+    display: block;
+    margin-top: 18px;
+    font-size: 18px;
+}

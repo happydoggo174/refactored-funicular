@@ -21,6 +21,9 @@ function set_user_info(info){
 }
 export async function load_navbar(){
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
+    document.getElementById('user-profile').addEventListener('click',(evt)=>{
+        window.location.href="account_page.html";
+    });
     const info=await get_user_info();
     if(info!=null){
         set_user_info(info);
