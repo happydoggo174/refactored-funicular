@@ -73,9 +73,10 @@ async function render_self(){
     const [info,comments]=await Promise.all([get_post_detail(post_id),get_post_comments()]);
     if(info==null){
         show_dialog("error loading post");
-        return;
+        return false;
     }
     document.getElementById('main-content').innerHTML=render_post(info,comments);
+    return true;
 }
 function add_span_value(span,val){
     const text=span.innerText;
@@ -124,7 +125,9 @@ async function handle_dislike(){
     document.getElementById("dislike-img").src="image/dislike_filled.svg";
 }
 document.addEventListener("DOMContentLoaded",async (evt)=>{
-    await render_self();
+    if(!await render_self()){
+        return;
+    }
     document.getElementById('add-comment-btn').addEventListener('click',post_comment);
     like_btn=document.getElementById('like-btn');
     dislike_btn=document.getElementById('dislike-btn');
