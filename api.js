@@ -1,5 +1,5 @@
 export const GITHUB_URL='';
-export const VERCEL_URL='http://127.0.0.1:8000';
+export const VERCEL_URL='https://automatic-giggle-ebon.vercel.app';
 let auth_header=sessionStorage.getItem('auth');
 if(auth_header!=null){
     auth_header={"Authorization":auth_header};

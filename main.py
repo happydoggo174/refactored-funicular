@@ -8,5 +8,4 @@ import os
 app=FastAPI()
 app.mount('/',StaticFiles(directory="./"))
 app.add_middleware(CORSMiddleware,allow_methods=['*'],allow_origins=['*'])
-print("link:http://127.0.0.1:9000/index.html")
 uvicorn.run(app,port=9000)
