@@ -2,7 +2,7 @@ import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comm
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
-import DOMPurify from './libs/dompurify 3.3.1';
+import DOMPurify from './libs/dompurify 3.3.1.js';
 let liked=false;
 let disliked=false;
 let like_btn=null;

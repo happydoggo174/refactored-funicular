@@ -1,5 +1,5 @@
 //require api.js,dompurifier to be included first
-import DOMPurify from './libs/dompurify 3.3.1';
+import DOMPurify from './libs/dompurify 3.3.1.js';
 import {get_post} from "./api.js";
 import { load_navbar,handle_resize } from './script.js';
 function get_now(){
