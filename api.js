@@ -84,8 +84,7 @@ export async function get_post_detail(post_id) {
     }
 }
 function get_post_id(){
-    const parts=window.location.href.split("/");
-    return parts[parts.length-1];
+    return (new URL(window.location.href)).searchParams.get('post_id');
 }
 export async function like_post(){
     const post_id=get_post_id();

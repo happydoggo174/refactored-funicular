@@ -69,8 +69,7 @@ function render_post(data,comments){
     `;
 }
 async function render_self(){
-    const params=window.location.href.split("/");
-    const post_id=params[params.length-1];
+    const post_id=new URL(window.location.href).searchParams.get('post_id');
     const [info,comments]=await Promise.all([get_post_detail(post_id),get_post_comments()]);
     if(info==null){
         show_dialog("error loading post");

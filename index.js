@@ -90,7 +90,9 @@ function load_dishes(dishes){
                 }
                 const id_string=target.id;
                 const id=parseInt(id_string.split(':')[1]);
-                window.location.href=`http://127.0.0.1:9000/post/detail/${id}`;
+                const url=new URL('http://127.0.0.1:9000/post-detail.html');
+                url.searchParams.append('post_id',id);;
+                window.location.href=url.toString();
             });
         }
     });
