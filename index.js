@@ -90,7 +90,7 @@ function load_dishes(dishes){
                 }
                 const id_string=target.id;
                 const id=parseInt(id_string.split(':')[1]);
-                const url=new URL('https://happydoggo174.github.io/refactored-funicular/post-detail.html');
+                const url=new URL('https://happydoggo174.github.io/refactored-funicular//post-detail.html');
                 url.searchParams.append('post_id',id);;
                 window.location.href=url.toString();
             });
