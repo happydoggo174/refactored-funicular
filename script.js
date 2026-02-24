@@ -3,7 +3,7 @@ import { get_user_info, VERCEL_URL } from "./api.js";
 function set_user_info(info){
     document.getElementById('nav-login-btn').style.display='none';
     const profile=document.getElementById('user-profile');
-    profile.src=info["profile"];
+    profile.src=`${VERCEL_URL}/image/?signature=${info["profile"]}&idx=0`;
     const username=document.getElementById('nav-username');
     if(username!=null){
         username.innerText=info["name"];

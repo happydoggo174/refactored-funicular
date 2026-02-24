@@ -50,6 +50,7 @@ export async function register(username,password,description,profile){
     return true;
 }
 export async function get_user_info(){
+    console.log(auth_header);
     if(auth_header==null){
         console.log("no auth header");
         return null;
