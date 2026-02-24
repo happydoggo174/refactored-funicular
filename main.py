@@ -32,6 +32,9 @@ class DomainReplaceMiddleware(BaseHTTPMiddleware):
             modified_body = body.replace(
                 self.domain_to_replace.encode(),
                 b"http://127.0.0.1:9000/"
+            ).replace(
+                b'https://automatic-giggle-ebon.vercel.app',
+                b'http://127.0.0.1:8000'    
             )
 
             # Rebuild response (important: update content-length)

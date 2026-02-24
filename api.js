@@ -28,13 +28,14 @@ export async function check_login(username,password){
     sessionStorage.setItem('auth',`Bearer ${token}`);
     return true;
 }
-export async function register(username,password,profile){
+export async function register(username,password,description,profile){
     const form_data=new FormData();
     form_data.append('username',username);
     form_data.append('password',password);
     if(profile!=""){
         form_data.append('profile',profile);
     }
+    form_data.append("description",description)
     try{
         const resp=await fetch(`${VERCEL_URL}/auth/register`,{
             method:"POST",

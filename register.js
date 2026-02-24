@@ -70,7 +70,7 @@ async function handle_register(evt){
         evt.target.style.transform='translate(0px,0px)';
         evt.target.style.rotate='0px'
         if(evt.type=='click'){
-            if(!await register(username,password,filename)){
+            if(!await register(username,password,"",filename)){
                 show_dialog("this username had been taken");
             }else{
                 show_dialog("register successfully");
