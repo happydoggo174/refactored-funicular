@@ -33,9 +33,10 @@ export async function register(username,password,description,profile){
     form_data.append('username',username);
     form_data.append('password',password);
     if(profile!=""){
+        console.log(profile);
         form_data.append('profile',profile);
     }
-    form_data.append("description",description)
+    form_data.append("description","nothing to see here");
     try{
         const resp=await fetch(`${VERCEL_URL}/auth/register`,{
             method:"POST",
