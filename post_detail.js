@@ -1,4 +1,4 @@
-import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments } from "./api.js";
+import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -31,7 +31,7 @@ function render_post(data,comments){
     }
     return `
         <div class="row">
-            <img src="${data['group_image']}" width="40px" height="40px" style="border-radius: 50%;">
+            <img src="${get_image(data["signature"],0)}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
                 <span style="font-size: 18px;">donuts</span>
                 <div class="row">
@@ -45,7 +45,7 @@ function render_post(data,comments){
             ${tags}
         </div>
         <div style="display: flex;">
-            <img src="${data["image"]}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
+            <img src="${get_image(data["signature"],1)}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
         </div>
         <span class="post-body">${data["body"]!=undefined?DOMPurify.sanitize(data["body"]):""}</span>
         <div class="row" style="margin-top: 12px;">

@@ -1,11 +1,11 @@
-import { get_user_info } from "./api.js";
+import { get_user_info, VERCEL_URL,get_image } from "./api.js";
 import { show_dialog } from "./tool.js";
 import {handle_resize,toggle_sidebar} from "./script.js";
 async function  change_password() {
     
 }
 function show_user_info(info){
-    document.getElementById('user-profile-big').src=info["profile"];
+    document.getElementById('user-profile-big').src=get_image(info["profile"],0);
     document.getElementById('username').innerText=info["name"];
     document.getElementById('stats-row').innerHTML=`
         <span>${parseInt(info["likes"])} likes</span>

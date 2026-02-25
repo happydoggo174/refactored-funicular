@@ -152,3 +152,6 @@ export async function add_post_comments(content) {
     console.log('added');
     return true;
 }
+export function get_image(signature,idx){
+    return `${VERCEL_URL}/image?signature=${signature}&idx=${idx}`;
+}
