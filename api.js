@@ -32,7 +32,7 @@ export async function register(username,password,description,profile){
     const form_data=new FormData();
     form_data.append('username',username);
     form_data.append('password',password);
-    if(profile!=""){
+    if(profile!=null){
         console.log(profile);
         form_data.append('profile',profile);
     }

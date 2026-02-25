@@ -63,7 +63,7 @@ function naughtyButtonHandler(evt) {
 async function handle_register(evt){
     const username=document.getElementById('username').value;
     const password=document.getElementById('pass_field').value;
-    const filename=document.getElementById('profile-field').value;
+    const filename=document.getElementById('profile-field').files[0];
     if(username=="" || password==""){
         naughtyButtonHandler(evt);
     }else{
