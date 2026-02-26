@@ -3,6 +3,7 @@
     flex-direction: column;
     margin-bottom: 12px;
     border-bottom: 1px solid black;
+    transition: 0.25s background-color ease-in-out;
 }
 .post:hover{
     background-color: wheat;
@@ -45,6 +46,7 @@
     border-radius: 14px;
     background-color: blue;
     color: white;
+    transition: 0.2s background-color ease-in-out;
 }
 .cook-btn:hover{
     background-color: green;

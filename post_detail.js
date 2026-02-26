@@ -85,8 +85,6 @@ function add_span_value(span,val){
 }
 async function post_comment(evt){
     try{
-        evt.preventDefault();  
-        evt.stopPropagation();  
         const content=document.getElementById('comment-field').value;
         if(content==""){
             return show_dialog("please enter comment before posting");

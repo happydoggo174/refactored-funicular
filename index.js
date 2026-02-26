@@ -84,10 +84,7 @@ function load_dishes(dishes){
     main_content.childNodes.forEach(div=>{
         if(div.tagName=="DIV"){
             div.addEventListener('click',(evt)=>{
-                let target=evt.target;
-                while(!target.classList.contains("post")){
-                    target=target.parentNode;
-                }
+                let target=evt.currentTarget;
                 const id_string=target.id;
                 const id=parseInt(id_string.split(':')[1]);
                 const url=new URL('https://happydoggo174.github.io/refactored-funicular//post-detail.html');

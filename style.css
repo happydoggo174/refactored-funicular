@@ -93,6 +93,9 @@
     align-items: center;
     text-align: center;
 }
+.favorite-btn{
+    transition: background-color 0.2s ease-in-out;
+}
 .favorite-btn:hover{
     background-color: rgb(196, 12, 83);
     color: white;
@@ -105,6 +108,9 @@
 .favorite-btn:hover::after{
     content: url("image/favorite.svg");
     margin-left: 8px;
+}
+.discoveries-btn{
+    transition: background-color 0.2s ease-in-out;
 }
 .discoveries-btn:hover{
     background-color: rgb(28, 120, 173);
