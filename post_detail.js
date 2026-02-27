@@ -1,5 +1,4 @@
-import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image,
-is_authenticated } from "./api.js";
+import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -96,9 +95,6 @@ async function post_comment(evt){
     }catch{}
 }
 async function handle_like(){
-    if(!is_authenticated()){
-        return show_dialog("please login to like this post");
-    }
     if(liked){return;}
     if(!await like_post()){
         return show_dialog("can't like this post");
@@ -113,9 +109,6 @@ async function handle_like(){
     document.getElementById('like-img').src="image/like_filled.svg";
 }
 async function handle_dislike(){
-    if(!is_authenticated()){
-        return show_dialog("please login to dislike this post");
-    }
     if(disliked){return;}
     if(!await dislike_post()){
         return show_dialog("can't dislike this post");

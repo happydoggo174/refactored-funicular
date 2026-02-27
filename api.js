@@ -4,7 +4,6 @@ let auth_header=sessionStorage.getItem('auth');
 if(auth_header!=null){
     auth_header={"Authorization":auth_header};
 }
-export function is_authenticated(){return auth_header!=null;}
 export async function check_login(username,password){
     const form_data=new FormData();
     form_data.append("username",username);
@@ -79,12 +78,8 @@ export async function get_post(){
 }
 export async function get_post_detail(post_id) {
     const url=`${VERCEL_URL}/post/detail/${post_id}`;
-    let headers={};
-    if(auth_header!=null){
-        headers=auth_header;
-    }
     try{
-        const resp=await fetch(url,{headers:headers});
+        const resp=await fetch(url);
         if(!resp.ok){return null;}
         return await resp.json();
     }catch{
@@ -95,12 +90,11 @@ function get_post_id(){
     return (new URL(window.location.href)).searchParams.get('post_id');
 }
 export async function like_post(){
-    if(auth_header==null){return false;}
     const post_id=get_post_id();
     const url=new URL(VERCEL_URL.concat("/post/like"));
     url.searchParams.append('post_id',post_id);
     try{
-        const resp=await fetch(url,{method:"POST",headers:auth_header});
+        const resp=await fetch(url,{method:"POST",});
         if(!resp.ok){return false;}
     }catch{
         return false;
@@ -108,12 +102,11 @@ export async function like_post(){
     return true;
 }
 export async function dislike_post(){
-    if(auth_header==null){return false;}
     const post_id=get_post_id();
     const url=new URL(VERCEL_URL.concat("/post/dislike"));
     url.searchParams.append('post_id',post_id);
     try{
-        const resp=await fetch(url,{method:"POST",headers:auth_header});
+        const resp=await fetch(url,{method:"POST",});
         if(!resp.ok){return false;}
     }catch{
         return false;
