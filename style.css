@@ -95,6 +95,7 @@
 }
 .favorite-btn{
     transition: background-color 0.2s ease-in-out;
+    overflow: hidden;
 }
 .favorite-btn:hover{
     background-color: rgb(196, 12, 83);
@@ -105,12 +106,24 @@
     align-items: center;
     justify-content: center;
 }
-.favorite-btn:hover::after{
-    content: url("image/favorite.svg");
+.favorite-img{
+    transform: translateY(3000%);
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+
+.favorite-btn:hover .favorite-img{
+    transform: translateY(0);
     margin-left: 8px;
+}
+#discover-img{
+    transform: translateX(500%);
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
 }
 .discoveries-btn{
     transition: background-color 0.2s ease-in-out;
+    overflow: hidden;
 }
 .discoveries-btn:hover{
     background-color: rgb(28, 120, 173);
@@ -121,8 +134,8 @@
     align-items: center;
     justify-content: center;
 }
-.discoveries-btn:hover::after{
-    content: url("image/star.svg");
+.discoveries-btn:hover #discover-img{
+    transform: translateX(0);
     margin-left: 8px;
 }
 .home-btn:hover{
