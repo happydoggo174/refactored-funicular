@@ -2,50 +2,53 @@
 function get_now(){
     return Math.floor((new Date().getTime())/1000);
 }
-export function time_to_string(time){
+export function time_to_string(time,max_component=2){
     const delta=get_now()-time;
     const seconds=delta%60;
     const minutes=Math.floor(delta/60)%60;
     const hours=Math.floor(delta/3600)%24;
     const days=Math.floor(delta/86400)%7;
     const weeks=Math.floor(delta/604800);
-    let output='';
+    let output=[];
     if(weeks>0){
         if(weeks>1){
-            output=output.concat(`${weeks} weeks `);
+            output.push(`${weeks} weeks `);
         }else{
-            output=output.concat(`${weeks} week `);
+            output.push(`${weeks} week `);
         }
     }
     if(days>0){
         if(days>1){
-            output=output.concat(`${days} days `);
+            output.push(`${days} days `);
         }else{
-            output=output.concat(`${days} day `);
+            output.push(`${days} day `);
         }
     }
     if(hours>0){
         if(hours>1){
-            output=output.concat(`${hours} hours `);
+            output.push(`${hours} hours `);
         }else{
-            output=output.concat(`${hours} hour `);
+            output.push(`${hours} hour `);
         }
     }
     if(minutes>0){
         if(minutes>1){
-            output=output.concat(`${minutes} minutes `);
+            output.push(`${minutes} minutes `);
         }else{
-            output=output.concat(`${minutes} minute `);
+            output.push(`${minutes} minute `);
         }
     }
     if(seconds>0){
         if(seconds>1){
-            output=output.concat(`${seconds} seconds `);
+            output.push(`${seconds} seconds `);
         }else{
-            output=output.concat(`${seconds} second `);
+            output.push(`${seconds} second `);
         }
     }
-    return output;
+    if(output.length>max_component){
+        output.length=max_component;
+    }
+    return output.join(" ");
 }
 export function show_dialog(msg){
     const dialog=document.createElement("div");

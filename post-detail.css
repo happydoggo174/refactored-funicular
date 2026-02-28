@@ -19,6 +19,8 @@
     padding: 4px;
     border-radius: 18px;
     background-color: blue;
+    opacity: 0.5;
+    transition: background-color 0.25s ease-in-out,opacity 0.25s ease-in-out;
 }
 .bottom-btn{
     align-items: center;

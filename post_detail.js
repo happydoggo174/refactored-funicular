@@ -8,6 +8,7 @@ let liked=false;
 let disliked=false;
 let like_btn=null;
 let dislike_btn=null;
+let send_btn=null;
 function render_post(data,comments){
     let tags="";
     let comments_string="";
@@ -94,7 +95,7 @@ async function post_comment(evt){
             return show_dialog("please enter comment before posting");
         }
         if(!await add_post_comments(content)){
-            show_dialog("can't post comments");
+            return show_dialog("can't post comments");
         }
         const new_comment=document.createElement("DIV");
         new_comment.classList.add('comment');
@@ -142,6 +143,33 @@ async function handle_dislike(){
     add_span_value(dislike_btn.getElementsByTagName('span').item(0),1);
     document.getElementById("dislike-img").src="image/dislike_filled.svg";
 }
+function handle_send_btn(evt){
+    if(send_btn==null){
+        send_btn=document.getElementById('add-comment-btn');
+    }
+    const comment_field=document.getElementById('comment-field')
+    const value=comment_field.value;
+    if(value==""){
+        send_btn.style.backgroundColor="blue";
+        send_btn.style.opacity="0.5";
+    }else{
+        send_btn.style.backgroundColor="green";
+        send_btn.style.opacity="1";
+    }
+}
+function handle_comment_hover(evt){
+    if(send_btn==null){
+        send_btn=document.getElementById('comment-add-btn');
+    }
+    if(evt.type=="mouseleave"){
+        send_btn.style.boxShadow="";
+    }else{
+        const value=document.getElementById('comment-field').value;
+        if(value!=""){
+            send_btn.style.boxShadow="1px 0 5px 4px";
+        }
+    }
+}
 document.addEventListener("DOMContentLoaded",async (evt)=>{
     if(!await render_self()){
         return;
@@ -151,6 +179,11 @@ document.addEventListener("DOMContentLoaded",async (evt)=>{
     dislike_btn=document.getElementById('dislike-btn');
     like_btn.addEventListener('click',handle_like);
     dislike_btn.addEventListener('click',handle_dislike);
+    const comment_field=document.getElementById('comment-field');
+    comment_field.addEventListener('input',handle_send_btn);
+    send_btn=document.getElementById('add-comment-btn');
+    send_btn.addEventListener('mouseenter',handle_comment_hover);
+    send_btn.addEventListener('mouseleave',handle_comment_hover);
     await load_navbar();
 });
 document.addEventListener('resize',handle_resize);
