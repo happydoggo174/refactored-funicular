@@ -34,7 +34,6 @@ export async function register(username,password,description,profile){
     form_data.append('username',username);
     form_data.append('password',password);
     if(profile!=null){
-        console.log(profile);
         form_data.append('profile',profile);
     }
     form_data.append("description","nothing to see here");
@@ -52,9 +51,7 @@ export async function register(username,password,description,profile){
     return true;
 }
 export async function get_user_info(){
-    console.log(auth_header);
     if(auth_header==null){
-        console.log("no auth header");
         return null;
     }
     try{
@@ -159,7 +156,6 @@ export async function add_post_comments(content) {
         console.log("error posting comment",e);
         return false;
     }
-    console.log('added');
     return true;
 }
 export function get_image(signature,idx){

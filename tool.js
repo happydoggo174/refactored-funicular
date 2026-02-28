@@ -4,7 +4,6 @@ function get_now(){
 }
 export function time_to_string(time){
     const delta=get_now()-time;
-    console.log(delta)
     const seconds=delta%60;
     const minutes=Math.floor(delta/60)%60;
     const hours=Math.floor(delta/3600)%24;
