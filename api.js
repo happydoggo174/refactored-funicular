@@ -1,6 +1,8 @@
 export const GITHUB_URL='';
 export const VERCEL_URL='https://automatic-giggle-ebon.vercel.app';
 let auth_header=sessionStorage.getItem('auth');
+let username=null;
+let profile_sig=null;
 if(auth_header!=null){
     auth_header={"Authorization":auth_header};
 }
@@ -12,6 +14,8 @@ export async function ping() {
         });
     }
 }
+export function get_username(){return username;}
+export function get_profile(){return profile_sig;}
 export function is_authenticated(){return auth_header!=null;}
 export async function check_login(username,password){
     const form_data=new FormData();
@@ -35,8 +39,6 @@ export async function check_login(username,password){
     const token=await resp.text();
     auth_header={'Authorization':`Bearer ${token}`}
     sessionStorage.setItem('auth',`Bearer ${token}`);
-    const worker=new Worker("./worker.js");
-    worker.postMessage(`Bearer ${token}`);
     return true;
 }
 export async function register(username,password,description,profile){
@@ -67,7 +69,9 @@ export async function get_user_info(){
     try{
         const resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
         if(!resp.ok){return null;}
-        return await resp.json();
+        const r=await resp.json();
+        profile_sig=get_image(r["profile"],0);
+        return r;
     }catch{
         return null;
     }

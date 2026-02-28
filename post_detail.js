@@ -1,5 +1,5 @@
 import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image,
-is_authenticated } from "./api.js";
+is_authenticated,get_username,get_profile } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -59,14 +59,14 @@ function render_post(data,comments){
                 <span>${parseInt(data["dislikes"])}</span>
             </button>
         </div>
-        <div class="row">
+        <div class="row" id="add-comment-area">
             <textarea type="text" class="add-comment" placeholder="share your thought here" 
             maxlength="550" id="comment-field"></textarea>
             <button class="comment-btn" id="add-comment-btn" type="button">
                 <img src="image/send.svg">
             </button>
         </div>
-        <div style="margin-top: 14px;">${comments_string}</div>
+        <div style="margin-top: 14px;" id="comment-area">${comments_string}</div>
     `;
 }
 async function render_self(){
@@ -96,6 +96,16 @@ async function post_comment(evt){
         if(!await add_post_comments(content)){
             show_dialog("can't post comments");
         }
+        const new_comment=document.createElement("DIV");
+        new_comment.classList.add('comment');
+        new_comment.innerHTML=`
+            <div class="row" style="margin-bottom:12px;">
+                <img src="${get_profile()}" width="30px" height="30px" style="border-radius:50%"></img>
+                <span>${DOMPurify.sanitize(get_username())}</span>
+            </div>
+            <span>${DOMPurify.sanitize(content)}</span>`;
+        document.getElementById('comment-area').appendChild(new_comment);
+        document.getElementById('add-comment-area').remove();
     }catch{}
 }
 async function handle_like(){
