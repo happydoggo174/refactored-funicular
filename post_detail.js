@@ -159,7 +159,7 @@ function handle_send_btn(evt){
 }
 function handle_comment_hover(evt){
     if(send_btn==null){
-        send_btn=document.getElementById('comment-add-btn');
+        send_btn=document.getElementById('add-comment-btn');
     }
     if(evt.type=="mouseleave"){
         send_btn.style.boxShadow="";
@@ -184,6 +184,11 @@ document.addEventListener("DOMContentLoaded",async (evt)=>{
     send_btn=document.getElementById('add-comment-btn');
     send_btn.addEventListener('mouseenter',handle_comment_hover);
     send_btn.addEventListener('mouseleave',handle_comment_hover);
+    if(!is_authenticated()){
+        send_btn.remove();
+        comment_field.placeholder="please login to comment";
+        comment_field.readOnly=true;
+    }
     await load_navbar();
 });
 document.addEventListener('resize',handle_resize);
