@@ -4,6 +4,14 @@ let auth_header=sessionStorage.getItem('auth');
 if(auth_header!=null){
     auth_header={"Authorization":auth_header};
 }
+export async function ping() {
+    if(auth_header!=null){
+        await fetch(`${VERCEL_URL}/auth/ping`,{
+            method:"POST",
+            headers:auth_header
+        });
+    }
+}
 export function is_authenticated(){return auth_header!=null;}
 export async function check_login(username,password){
     const form_data=new FormData();
@@ -27,6 +35,8 @@ export async function check_login(username,password){
     const token=await resp.text();
     auth_header={'Authorization':`Bearer ${token}`}
     sessionStorage.setItem('auth',`Bearer ${token}`);
+    const worker=new Worker("./worker.js");
+    worker.postMessage(`Bearer ${token}`);
     return true;
 }
 export async function register(username,password,description,profile){
