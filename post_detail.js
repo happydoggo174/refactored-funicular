@@ -18,11 +18,11 @@ function render_post(data,comments){
     });
     if(comments!=null){
         comments.forEach((comment)=>{
-            console.log("building comment string");
+            const profile=get_image(comment["profile"],0);
             comments_string=comments_string.concat(`
                 <div class="comment">
                     <div class="row" style="margin-bottom:12px;">
-                        <img src="${comment["profile"]}" width="30px" height="30px" style="border-radius:50%"></img>
+                        <img src="${profile}" width="30px" height="30px" style="border-radius:50%"></img>
                         <span>${DOMPurify.sanitize(comment["user"])}</span>
                     </div>
                     <span>${DOMPurify.sanitize(comment["content"])}</span>
@@ -86,6 +86,9 @@ function add_span_value(span,val){
 }
 async function post_comment(evt){
     try{
+        if(!is_authenticated()){
+            return show_dialog("please login to comment");
+        }
         const content=document.getElementById('comment-field').value;
         if(content==""){
             return show_dialog("please enter comment before posting");

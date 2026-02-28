@@ -137,7 +137,7 @@ export async function get_post_comments() {
     }
 }
 export async function add_post_comments(content) {
-    console.log("adding comments");
+    if(auth_header==null){return false;}
     const post_id=get_post_id();
     const url=new URL(VERCEL_URL.concat("/post/comment"));
     url.searchParams.append('post_id',post_id);
@@ -148,7 +148,8 @@ export async function add_post_comments(content) {
             url,
             {
                 method:"POST",
-                body:form_data
+                body:form_data,
+                headers:auth_header
             }
         );
         if(!resp.ok){
