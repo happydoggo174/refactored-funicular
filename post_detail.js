@@ -1,5 +1,5 @@
 import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image,
-is_authenticated,get_username,get_profile } from "./api.js";
+is_authenticated,get_username,get_profile,delete_post } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -9,6 +9,7 @@ let disliked=false;
 let like_btn=null;
 let dislike_btn=null;
 let send_btn=null;
+let is_owner=false;
 function render_post(data,comments){
     let tags="";
     let comments_string="";
@@ -17,6 +18,7 @@ function render_post(data,comments){
     data["tags"].forEach(tag => {
         tags=tags.concat(`<span class='tags'>${DOMPurify.sanitize(tag)}</span>`);
     });
+    is_owner=data["deletable"]!=false;
     if(comments!=null){
         comments.forEach((comment)=>{
             const profile=get_image(comment["profile"],0);
@@ -32,7 +34,7 @@ function render_post(data,comments){
         });
     }
     return `
-        <div class="row">
+        <div class="row" style="justify-content: space-between;">
             <img src="${get_image(data["signature"],0)}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
                 <span style="font-size: 18px;">${DOMPurify.sanitize(data["group"])}</span>
@@ -40,6 +42,17 @@ function render_post(data,comments){
                     <span>${DOMPurify.sanitize(data['author'])}</span>
                     <span>${time_to_string(parseInt(data["time"]))+"ago"}</span>
                 </div>
+            </div>
+            <div style="flex-grow:1;"></div>
+            <div id="menu-div">
+                <div id="option-menu">
+                    <button>create variant</button>
+                    <button id="post-delete-btn">delete post</button>
+                    <button>report as spam</button>
+                </div>
+                <button id="menu-btn">
+                    <img src="image/more.svg"></img>
+                </button>
             </div>
         </div>
         <h1>${DOMPurify.sanitize(data['tilte'])}</h1>
@@ -170,15 +183,8 @@ function handle_comment_hover(evt){
         }
     }
 }
-document.addEventListener("DOMContentLoaded",async (evt)=>{
-    if(!await render_self()){
-        return;
-    }
+function init_comment(){
     document.getElementById('add-comment-btn').addEventListener('click',post_comment);
-    like_btn=document.getElementById('like-btn');
-    dislike_btn=document.getElementById('dislike-btn');
-    like_btn.addEventListener('click',handle_like);
-    dislike_btn.addEventListener('click',handle_dislike);
     const comment_field=document.getElementById('comment-field');
     comment_field.addEventListener('input',handle_send_btn);
     send_btn=document.getElementById('add-comment-btn');
@@ -189,6 +195,41 @@ document.addEventListener("DOMContentLoaded",async (evt)=>{
         comment_field.placeholder="please login to comment";
         comment_field.readOnly=true;
     }
+}
+async function handle_delete_post(evt){
+    const stat=await delete_post();
+    if(!stat){
+        show_dialog("can't delete this post");
+    }
+    document.location.href="index.html";
+}
+function init_menu(){
+    const delete_btn=document.getElementById('post-delete-btn');
+    if(is_owner){
+        delete_btn.addEventListener('click',handle_delete_post);
+    }else{
+        delete_btn.style.display='none';
+    }
+}
+function show_more(){ 
+    const menu=document.getElementById('option-menu');
+    if(menu.style.display=='none'){
+        menu.style.display='flex';
+    }else{
+        menu.style.display='none';
+    }
+}
+document.addEventListener("DOMContentLoaded",async (evt)=>{
+    if(!await render_self()){
+        return;
+    }
+    like_btn=document.getElementById('like-btn');
+    dislike_btn=document.getElementById('dislike-btn');
+    like_btn.addEventListener('click',handle_like);
+    dislike_btn.addEventListener('click',handle_dislike);
+    document.getElementById('menu-btn').addEventListener('click',show_more);
+    init_comment();
+    init_menu();
     await load_navbar();
 });
 document.addEventListener('resize',handle_resize);

@@ -175,3 +175,21 @@ export async function add_post_comments(content) {
 export function get_image(signature,idx){
     return `${VERCEL_URL}/image?signature=${signature}&idx=${idx}`;
 }
+export async function delete_post() {
+    if(auth_header==null){return false;}
+    const post_id=get_post_id();
+    if(post_id==null){return false;}
+    const url=new URL(`${VERCEL_URL}/post/remove`);
+    url.searchParams.set('post_id',post_id);
+    try{
+        const resp=await fetch(
+            url,{
+                method:"DELETE",
+                headers:auth_header
+            }
+        );
+        return resp.ok;
+    }catch{
+        return false;
+    }
+}
