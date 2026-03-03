@@ -51,4 +51,6 @@
 }
 #option-menu button{
     margin-bottom: 8px;
+    border: none;
+    background-color: white;
 }

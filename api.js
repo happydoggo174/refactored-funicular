@@ -175,9 +175,11 @@ export async function add_post_comments(content) {
 export function get_image(signature,idx){
     return `${VERCEL_URL}/image?signature=${signature}&idx=${idx}`;
 }
-export async function delete_post() {
+export async function delete_post(post_id=null) {
     if(auth_header==null){return false;}
-    const post_id=get_post_id();
+    if(post_id==null){
+        post_id=get_post_id();
+    }
     if(post_id==null){return false;}
     const url=new URL(`${VERCEL_URL}/post/remove`);
     url.searchParams.set('post_id',post_id);
@@ -188,6 +190,32 @@ export async function delete_post() {
                 headers:auth_header
             }
         );
+        return resp.ok;
+    }catch{
+        return false;
+    }
+}
+export async function edit_user_info({username=null,password=null,profile=null,description=null}) {
+    if(auth_header==null){return false;}
+    try{
+        const body=new FormData();
+        if(username!=null){
+            body.set('username',username);
+        }
+        if(password!=null){
+            body.set('password',password);
+        }
+        if(profile!=null){
+            body.set('profile',profile);
+        }
+        if(description!=null){
+            body.set('description',description);
+        }
+        const resp=await fetch(`${VERCEL_URL}/user/info`,{
+            method:"PUT",
+            headers:auth_header,
+            body:body
+        });
         return resp.ok;
     }catch{
         return false;

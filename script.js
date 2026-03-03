@@ -1,5 +1,5 @@
 let open_menu=window.innerWidth>=670;
-import { get_user_info, VERCEL_URL,ping } from "./api.js";
+import { get_user_info, VERCEL_URL,ping, is_authenticated } from "./api.js";
 function set_user_info(info){
     document.getElementById('nav-login-btn').style.display='none';
     const profile=document.getElementById('user-profile');
@@ -21,9 +21,11 @@ function set_user_info(info){
 }
 export async function load_navbar(load_user=true){
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
-    document.getElementById('user-profile').addEventListener('click',(evt)=>{
-        window.location.href="account_page.html";
-    });
+    if(is_authenticated()){
+        document.getElementById('user-profile').addEventListener('click',(evt)=>{
+            window.location.href="account_page.html";
+        });
+    }
     if(!load_user){return;}
     const info=await get_user_info();
     if(info!=null){

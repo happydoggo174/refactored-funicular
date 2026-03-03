@@ -13,7 +13,7 @@
     box-shadow: 2px 0px 2px 2px black;
     display: flex;
     flex-direction: row;
-    height: 80vh;
+    height: auto;
 }
 .stats-row{
     display: flex;
@@ -75,4 +75,24 @@
     .main-content{
         margin-left: 24vw;
     }
+}
+#confirm-btn{
+    padding: 6px;
+    background-color: green;
+    border-radius: 14px;
+}
+#card-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-grow: 1;
+    margin-left: 12px;
+}
+.yes-btn{
+    background-color: green;
+    border-radius: 12px;
+}
+.no-btn{
+    background-color: red;
+    border-radius: 12px;
 }

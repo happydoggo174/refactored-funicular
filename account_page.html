@@ -40,16 +40,17 @@
     <div class="main-content">
         <div class="id-card">
             <img src="" id="user-profile-big" max-height="100%">
-            <div
-                style="display: flex;flex-direction: column;justify-content: space-around;flex-grow: 1;margin-left: 12px;">
-                <div class="row">
-                    <div style="display: flex;flex-direction: column;flex-grow: 1;margin-right: 12px;">
-                        <div class="row" style="justify-content: space-between;">
+            <div id="card-info">
+                <div class="row" style="width: 100%;">
+                    <div style="display: flex;flex-direction: column;flex-grow: 1;width: 100%;">
+                        <div id="username-edit"></div>
+                        <div class="row" style="justify-content: space-between;" id="username-container">
                             <h1 id="username"></h1>
-                            <button style="border-radius: 50%;padding: 8px;">
+                            <button style="border-radius: 50%;padding: 8px;" id="change-username-btn">
                                 <img src="image/edit.svg" alt="">
                             </button>
                         </div>
+                        <div id="pass-container"></div>
                         <button id="change-password-btn">
                             change password
                             <img src="image/lock.svg" alt="" id="lock-icon">
@@ -59,16 +60,22 @@
                 <div>
                     <span class="stats-banner">stats</span>
                     <div class="stats-row" id="stats-row">
-                        <span>122 likes</span>
-                        <span>67 dislikes</span>
-                        <span>9 posts</span>
-                        <span>22 comments</span>
+                        <span>? likes</span>
+                        <span>? dislikes</span>
+                        <span>? posts</span>
+                        <span>? comments</span>
                     </div>
                 </div>
                 <div>
-                    <span class="description-banner">Description</span>
-                    <div class="description-content" id="description-content">a casual housewife who's open to cooking to letting off steam every
-                        weekend.</div>
+                    <div class="row">
+                        <span class="description-banner">Description</span>
+                        <div id="description-edit-div"></div>
+                        <button style="border-radius: 50%;padding: 8px;" id="change-description-btn">
+                            <img src="image/edit.svg" alt="">
+                        </button>
+                    </div>
+                    <div class="description-content" id="description-content">loading,please wait...</div>
+                    <textarea id="description-field" style="display: none;" class="description-content"></textarea>
                 </div>
             </div>
         </div>
