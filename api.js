@@ -6,12 +6,50 @@ let profile_sig=null;
 if(auth_header!=null){
     auth_header={"Authorization":auth_header};
 }
+function runChallenge(html) {
+  return new Promise((resolve) => {
+    const iframe = document.createElement("iframe");
+
+    iframe.style.position = "fixed";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.style.visibility = "hidden";
+
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow.document;
+
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    // wait a bit for challenge script to run and set cookie
+    setTimeout(() => {
+      iframe.remove();
+      resolve();
+    }, 3000);
+  });
+}
+async function check_challenge(resp){
+    if(resp.status==403 && (resp.headers.get("content-type")||"").includes("text/html")){
+        await runChallenge(resp.text());
+        return true;
+    }
+    return false;
+}
 export async function ping() {
     if(auth_header!=null){
-        await fetch(`${VERCEL_URL}/auth/ping`,{
+        const resp=await fetch(`${VERCEL_URL}/auth/ping`,{
             method:"POST",
             headers:auth_header
         });
+        if(await check_challenge(resp)){
+            await fetch(`${VERCEL_URL}/auth/ping`,{
+                method:"POST",
+                headers:auth_header
+            });
+        }
     }
 }
 export function get_username(){return username;}
@@ -30,6 +68,15 @@ export async function check_login(username,password){
                 body:form_data
             }
         );
+        if(await check_challenge(resp)){
+             resp=await fetch(
+            `${VERCEL_URL}/auth/login`,
+            {
+                method:"POST",
+                body:form_data
+            }
+        );
+        }
     }catch{
         return false;
     }
@@ -50,10 +97,16 @@ export async function register(username,password,description,profile){
     }
     form_data.append("description","nothing to see here");
     try{
-        const resp=await fetch(`${VERCEL_URL}/auth/register`,{
+        let resp=await fetch(`${VERCEL_URL}/auth/register`,{
             method:"POST",
             body:form_data
         });
+        if(await check_challenge(resp)){
+            resp=await fetch(`${VERCEL_URL}/auth/register`,{
+                method:"POST",
+                body:form_data
+            });
+        }
         if(!resp.ok){
             return false;
         }
@@ -67,7 +120,10 @@ export async function get_user_info(){
         return null;
     }
     try{
-        const resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
+        let resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
+        if(await check_challenge(resp)){
+            resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
+        }
         if(!resp.ok){return null;}
         const r=await resp.json();
         profile_sig=get_image(r["profile"],0);
@@ -80,6 +136,9 @@ export async function get_post(){
     let resp=null;
     try{
         resp=await fetch(`${VERCEL_URL}/post/home`);
+        if(await check_challenge(resp)){
+            resp=await fetch(`${VERCEL_URL}/post/home`);
+        }
         if(!resp.ok){
             return null;
         }
@@ -97,6 +156,13 @@ export async function get_post_detail(post_id) {
         }else{
             resp=await fetch(url,{headers:auth_header});
         }
+        if(await check_challenge(resp)){
+            if(auth_header==null){
+                resp=await fetch(url);
+            }else{
+                resp=await fetch(url,{headers:auth_header});
+            }
+        }
         if(!resp.ok){return null;}
         return await resp.json();
     }catch(e){
@@ -113,7 +179,10 @@ export async function like_post(){
     const url=new URL(VERCEL_URL.concat("/post/like"));
     url.searchParams.append('post_id',post_id);
     try{
-        const resp=await fetch(url,{method:"POST",headers:auth_header});
+        let resp=await fetch(url,{method:"POST",headers:auth_header});
+        if(await check_challenge(resp)){
+            resp=await fetch(url,{method:"POST",headers:auth_header});
+        }
         if(!resp.ok){return false;}
     }catch{
         return false;
@@ -126,7 +195,10 @@ export async function dislike_post(){
     const url=new URL(VERCEL_URL.concat("/post/dislike"));
     url.searchParams.append('post_id',post_id);
     try{
-        const resp=await fetch(url,{method:"POST",headers:auth_header});
+        let resp=await fetch(url,{method:"POST",headers:auth_header});
+        if(await check_challenge(resp)){
+            resp=await fetch(url,{method:"POST",headers:auth_header});
+        }
         if(!resp.ok){return false;}
     }catch{
         return false;
@@ -138,7 +210,10 @@ export async function get_post_comments() {
     const url=new URL(VERCEL_URL.concat("/post/comment"));
     url.searchParams.append('post_id',post_id);
     try{
-        const resp=await fetch(url);
+        let resp=await fetch(url);
+        if(await check_challenge(resp)){
+            resp=await fetch(url);
+        }
         if(!resp.ok){
             return null;
         }
@@ -155,7 +230,7 @@ export async function add_post_comments(content) {
     const form_data=new FormData();
     form_data.append('content',content);
     try{
-        const resp=await fetch(
+        let resp=await fetch(
             url,
             {
                 method:"POST",
@@ -163,6 +238,16 @@ export async function add_post_comments(content) {
                 headers:auth_header
             }
         );
+        if(await check_challenge(resp)){
+            resp=await fetch(
+                url,
+                {
+                    method:"POST",
+                    body:form_data,
+                    headers:auth_header
+                }
+            );
+        }
         if(!resp.ok){
             return false;
         }
@@ -184,12 +269,20 @@ export async function delete_post(post_id=null) {
     const url=new URL(`${VERCEL_URL}/post/remove`);
     url.searchParams.set('post_id',post_id);
     try{
-        const resp=await fetch(
+        let resp=await fetch(
             url,{
                 method:"DELETE",
                 headers:auth_header
             }
         );
+        if(await check_challenge(resp)){
+            resp=await fetch(
+                url,{
+                    method:"DELETE",
+                    headers:auth_header
+                }
+            );
+        }
         return resp.ok;
     }catch{
         return false;
@@ -211,11 +304,18 @@ export async function edit_user_info({username=null,password=null,profile=null,d
         if(description!=null){
             body.set('description',description);
         }
-        const resp=await fetch(`${VERCEL_URL}/user/info`,{
+        let resp=await fetch(`${VERCEL_URL}/user/info`,{
             method:"PUT",
             headers:auth_header,
             body:body
         });
+        if(await check_challenge(resp)){
+            resp=await fetch(`${VERCEL_URL}/user/info`,{
+                method:"PUT",
+                headers:auth_header,
+                body:body
+            });
+        }
         return resp.ok;
     }catch{
         return false;
