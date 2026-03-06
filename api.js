@@ -21,7 +21,7 @@ function runChallenge(html) {
     const doc = iframe.contentWindow.document;
 
     doc.open();
-    doc.write(html);
+    doc.body.innerHTML=html;
     doc.close();
 
     // wait a bit for challenge script to run and set cookie
