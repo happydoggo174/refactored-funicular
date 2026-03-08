@@ -148,7 +148,7 @@ export async function get_post(){
     }
 }
 export async function get_post_detail(post_id) {
-    const url=`${VERCEL_URL}/post/detail/${post_id}`;
+    const url=`${VERCEL_URL}/post/detail/${post_id}?version=2`;
     try{
         let resp=null;
         if(auth_header==null){

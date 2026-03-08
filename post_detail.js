@@ -35,6 +35,7 @@ function render_post(data,comments){
     }
     return `
         <div class="row" style="justify-content: space-between;">
+            <img src="${get_image(data["signature"],0)}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
                 <div class="row">
                     <span>${DOMPurify.sanitize(data['author'])}</span>
