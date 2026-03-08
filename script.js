@@ -84,6 +84,5 @@ export function run_sbx(container, htmlContent) {
   container.appendChild(iframe);
 }
 document.addEventListener('DOMContentLoaded',async(evt)=>{
-    run_sbx(document.getElementById("side-bar"),"<b>some sandboxed content</b>");
     setInterval(ping,360*1000);
 });
