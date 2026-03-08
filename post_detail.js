@@ -35,9 +35,7 @@ function render_post(data,comments){
     }
     return `
         <div class="row" style="justify-content: space-between;">
-            <img src="${get_image(data["signature"],0)}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
-                <span style="font-size: 18px;">${DOMPurify.sanitize(data["group"])}</span>
                 <div class="row">
                     <span>${DOMPurify.sanitize(data['author'])}</span>
                     <span>${time_to_string(parseInt(data["time"]))+"ago"}</span>

@@ -16,7 +16,7 @@ function load_dishes(dishes){
             <div class="post" id="${"dish:".concat(parseInt(dish["id"]).toString())}">
                 <div class="post-info">
                     <div class="row">
-                        <h3>${html_escape(dish["group"])}</h3>
+                        <span>${DOMPurify.sanitize(dish["author"])}</span>
                         <span>${time_to_string(parseInt(dish["time"])).concat('ago')}</span>
                     </div>
                     <div class="row">

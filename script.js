@@ -1,5 +1,5 @@
 let open_menu=window.innerWidth>=670;
-import { get_user_info, VERCEL_URL,ping, is_authenticated } from "./api.js";
+import { get_user_info, VERCEL_URL,ping, is_authenticated} from "./api.js";
 function set_user_info(info){
     document.getElementById('nav-login-btn').style.display='none';
     const profile=document.getElementById('user-profile');
@@ -55,6 +55,35 @@ export function toggle_sidebar(){
         menu.style.transform='translateX(0%)';
     }
 }
+export function run_sbx(container, htmlContent) {
+  const iframe = document.createElement("iframe");
+
+  iframe.setAttribute("sandbox","");
+
+  iframe.style.width = "100%";
+  iframe.style.border = "none";
+
+  // Prevent same-origin access
+  iframe.srcdoc = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Security-Policy"
+              content="img-src ${VERCEL_URL}">
+        <style>
+          body { margin: 0; font-family: sans-serif; }
+        </style>
+      </head>
+      <body>
+        ${htmlContent}
+      </body>
+    </html>
+  `;
+
+  container.appendChild(iframe);
+}
 document.addEventListener('DOMContentLoaded',async(evt)=>{
+    run_sbx(document.getElementById("side-bar"),"<b>some sandboxed content</b>");
     setInterval(ping,360*1000);
 });

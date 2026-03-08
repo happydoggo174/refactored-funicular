@@ -321,3 +321,60 @@ export async function edit_user_info({username=null,password=null,profile=null,d
         return false;
     }
 }
+export async function create_variant(){
+    if(auth_header==null){return null;}
+    const post_id=get_post_id();
+    if(post_id==null){return null;}
+    try{
+        const url=new URL(`${VERCEL_URL}/post/fork`);
+        url.searchParams.set("post_id",post_id);
+        let resp=await fetch(url,{
+            method:"POST",
+            headers:auth_header            
+        });
+        if(await check_challenge(resp)){
+            resp=await fetch(url,{
+                method:"POST",
+                headers:auth_header            
+            });
+        }
+        if(!resp.ok){return null;}
+        return await resp.text();
+    }catch{
+        return null;
+    }
+}
+export async function edit_post({tilte=null,content=null,tags=null,images=null}) {
+    const post_id=get_post_id();
+    if(post_id==null || auth_header==null){return false;}
+    const body=new FormData();
+    try{
+        if(tilte){
+        body.append("tilte",tilte);
+        }
+        if(content){
+            body.append("content",content);
+        }
+        if(tags){
+            body.append(tags);
+        }
+        if(images){
+            body.append(images);
+        }
+        let resp=await fetch(url,{
+            method:"PUT",
+            body:body,
+            headers:auth_header
+        });
+        if(await check_challenge(resp)){
+            resp=await fetch(url,{
+                method:"PUT",
+                body:body,
+                headers:auth_header
+            });
+        }
+        return resp.ok;
+    }catch{
+        return false;
+    }
+}
