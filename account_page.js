@@ -1,6 +1,6 @@
 import { get_user_info, VERCEL_URL,get_image,edit_user_info } from "./api.js";
 import { show_dialog } from "./tool.js";
-import {handle_resize,toggle_sidebar} from "./script.js";
+import {handle_resize,toggle_sidebar,load_navbar} from "./script.js";
 async function save_pass_edit(){
     const password=document.getElementById('password-field').value;
     if(password==""){
@@ -153,6 +153,7 @@ function setup_eventListener(){
     window.addEventListener('resize',handle_resize);
 }
 document.addEventListener('DOMContentLoaded',async (evt)=>{
+    await load_navbar(false);
     const info=await get_user_info();
     if(info==null){
         return show_dialog("error loading profile");

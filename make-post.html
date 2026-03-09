@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>food social</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="make-post.css">
+    <script src="make_post.js" type="module"></script>
+</head>
+<body>
+    <input type="file" style="display: none;" id="file-input">
+    <div class="row">
+        <button class="paragraph-img-btn" id="photo-add-btn">
+            <img src="image/add_photo.svg" >
+            add photo
+        </button>
+    </div>
+    <div id="paragraph-list">
+        <div class="row" style="justify-content: center;" id="post-tilte">
+            <textarea placeholder="your tilte here" id="tilte-banner" rows="1" class="hidden-field"></textarea>
+        </div>
+        <div class="tags-list" id="tags-row">
+            <span>tags:</span>
+            <div id="tags-list-inner">
+
+            </div>
+            <button id="add-tag-btn">
+                <img src="image/add_black.svg">
+            </button>
+
+        </div>
+        <div class="paragraph-content" contenteditable="true">
+            your recipe here
+        </div>
+    </div>
+    <div class="row" id="action-row">
+        <button id="upload-btn">upload</button>
+        <button id="cancel-btn">cancel</button>
+    </div>
+</body>
+</html>

@@ -22,11 +22,16 @@ function set_user_info(info){
 export async function load_navbar(load_user=true){
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
     if(is_authenticated()){
+        document.getElementById('post-btn').addEventListener('click',()=>{window.location.href="make-post.html"});
+    }else{
+        document.getElementById('post-btn').style.display="none";
+    }
+    if(!load_user){return;}
+    if(is_authenticated()){
         document.getElementById('user-profile').addEventListener('click',(evt)=>{
             window.location.href="account_page.html";
         });
     }
-    if(!load_user){return;}
     const info=await get_user_info();
     if(info!=null){
         set_user_info(info);

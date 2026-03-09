@@ -1,0 +1,107 @@
+.hidden-field{
+    border: none;
+}
+.hidden-field:hover{
+    border: 1px dashed black;
+}
+.hidden-field:focus{
+    border: 1px solid black;
+}
+#upload-btn{
+    border-radius: 14px;
+    padding: 8px;
+    background-color: green;
+    transition: background-color 0.25s ease-in-out,width 0.25s ease-in-out;
+    width: 50%;
+}
+#upload-btn:hover{
+    background-color: blue;
+    width: 60%;
+    color: white;
+}
+#cancel-btn{
+    border-radius: 14px;
+    padding: 8px;
+    transition: background-color 0.25s ease-in-out,width 0.25s ease-in-out;
+    width: 50%;
+}
+#cancel-btn:hover{
+    background-color: red;
+    width: 60%;
+    color: white;
+}
+#tilte-banner{
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    justify-self: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    width: 50%;
+    padding: 6px;
+}
+#action-row{
+    width: 100%;
+}
+#add-paragraph-btn{
+    border: 1px dashed black;
+    padding: 14px;
+    border-radius: 16px;
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.paragraph{
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    scrollbar-width: none;
+    overflow: hidden;
+}
+.paragraph-img-btn{
+    margin-top: 12px;
+    margin-right: 12px;
+    padding: 4px;
+    border-radius: 14px;
+    align-items: center;
+    display: flex;
+    width: 50%;
+    justify-content: center;
+}
+.paragraph-delete-btn{
+    margin-top: 12px;
+    margin-right: 12px;
+    padding: 4px;
+    border-radius: 14px;
+    align-items: center;
+    display: flex;
+    width: 50%;
+    justify-content: center;
+}
+.paragraph-delete-btn:hover{
+    background-color: red;
+}
+#tags-row{
+    gap: 12px;
+    display: flex;
+    align-items: center;
+}
+#tags-list-inner{
+    display: flex;
+    gap:12px;
+    align-items: baseline;
+}
+.tag{
+    display:flex;
+    align-items:center;
+    border:1px solid black;
+    border-radius: 6px;
+}
