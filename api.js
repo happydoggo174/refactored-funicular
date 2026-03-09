@@ -386,11 +386,8 @@ export async function add_post(tilte,content,tags,files) {
     body.append('tags',tags);
     const url=new URL(`${VERCEL_URL}/post/make`);
     url.searchParams.set('group_id',0);
-    console.log("api files=",files);
     const file_data=[];
     for(let i=0;i<files.length;i++){
-        console.log("adding files");
-        console.log(files[i][0],files[i][1]);
         body.append('image',files[i][0],files[i][1]);
     }
     try{

@@ -68,21 +68,24 @@ async function save_recipe(){
         tags_string+=tags[i].querySelector("DIV").innerHTML;
     }
     const files=[];
-    console.log(photos);
     for(const [id,file] of photos){
         files.push([file,id]);
     }
-    console.log(files);
     console.log(await add_post(tilte,content,tags_string,files));
 }
 function add_tags(){
     const tags=document.createElement("DIV");
     tags.innerHTML=`
         <div contenteditable="true" style="min-width:20px;margin-right:8px;height:100%;margin-left:6px"></div>
-        <button>
-            <img src="image/close_black.svg"></img>
+        <button style="border-radius:8px;">
+            <img src="image/close_black.svg" style="border-radius:8px;"></img>
         </button>
     `;
+    tags.querySelector('button').addEventListener('click',(evt)=>{
+        const button=evt.currentTarget;
+        const tags=button.parentElement;
+        document.getElementById('tags-list-inner').removeChild(tags);
+    });
     tags.classList.add("tag");
     document.getElementById("tags-list-inner").appendChild(tags);
 }
