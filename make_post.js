@@ -22,6 +22,7 @@ function select_photo(evt){
     const file=evt.target.files[0];
     if(file){
         const reader=new FileReader();
+        const name=file.name;
         reader.onload=function(evt){
             const image=document.createElement("IMG");
             image.src=evt.target.result;
@@ -35,7 +36,7 @@ function select_photo(evt){
             div.contentEditable=true;
             div.classList.add("paragraph-content");
             paragraph.appendChild(div);
-            const photo_id=generateSecureRandomHex(24);
+            const photo_id=generateSecureRandomHex(24)+'.'+name.split('.').pop();
             photos.set(photo_id,file);
         }
         reader.readAsDataURL(file);
@@ -71,7 +72,10 @@ async function save_recipe(){
     for(const [id,file] of photos){
         files.push([file,id]);
     }
-    console.log(await add_post(tilte,content,tags_string,files));
+    const stat=(await add_post(tilte,content,tags_string,files));
+    if(stat==200){
+        window.location.href=`index.html`;
+    }
 }
 function add_tags(){
     const tags=document.createElement("DIV");

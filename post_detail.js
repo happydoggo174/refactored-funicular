@@ -1,5 +1,5 @@
-import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_image,
-is_authenticated,get_username,get_profile,delete_post } from "./api.js";
+import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_public_image,
+is_authenticated,get_username,get_profile,delete_post,get_image } from "./api.js";
 import { load_navbar,handle_resize } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -35,7 +35,7 @@ function render_post(data,comments){
     }
     return `
         <div class="row" style="justify-content: space-between;">
-            <img src="${get_image(data["signature"],0)}" width="40px" height="40px" style="border-radius: 50%;">
+            <img src="${get_public_image(data["author_img"])}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
                 <div class="row">
                     <span>${DOMPurify.sanitize(data['author'])}</span>
@@ -59,7 +59,7 @@ function render_post(data,comments){
             ${tags}
         </div>
         <div style="display: flex;">
-            <img src="${get_image(data["signature"],1)}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
+            <img src="${get_public_image(data["image"][0])}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
         </div>
         <span class="post-body">${data["body"]!=undefined?DOMPurify.sanitize(data["body"]):""}</span>
         <div class="row" style="margin-top: 12px;">

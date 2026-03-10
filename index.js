@@ -1,11 +1,7 @@
-//require api.js,dompurifier to be included first
 import DOMPurify from './libs/dompurify 3.3.1.js';
-import {get_post,get_image} from "./api.js";
+import {get_post,get_public_image} from "./api.js";
 import { load_navbar,handle_resize } from './script.js';
 import { time_to_string } from './tool.js';
-function get_now(){
-    return Math.floor((new Date().getTime())/1000);
-}
 function html_escape(text){
     return DOMPurify.sanitize(text);
 }
@@ -25,7 +21,7 @@ function load_dishes(dishes){
                 </div>
                 <h1 class="post-tilte">${html_escape(dish['tilte'])}</h1>
                 <div class="post-frame">
-                    <img src="${get_image(dish['image'],0)}">
+                    <img src="${get_public_image(dish['image'])}">
                 </div>
                 <div class="post-btn-rows">
                     <button class="post-btn like-btn">${parseInt(dish['likes'])} likes</button>

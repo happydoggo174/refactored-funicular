@@ -35,6 +35,9 @@ class DomainReplaceMiddleware(BaseHTTPMiddleware):
             ).replace(
                 b'https://automatic-giggle-ebon.vercel.app',
                 b'http://127.0.0.1:8000'    
+            ).replace(
+                b'https://rwsrnlqhdtdctckxrlyz.supabase.co/storage/v1/object/public/file_bucket',
+                b'http://127.0.0.1:9324'
             )
 
             # Rebuild response (important: update content-length)

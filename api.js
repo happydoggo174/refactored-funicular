@@ -1,5 +1,6 @@
 export const GITHUB_URL='';
 export const VERCEL_URL='https://automatic-giggle-ebon.vercel.app';
+const SUPABASE_URL='https://rwsrnlqhdtdctckxrlyz.supabase.co/storage/v1/object/public/file_bucket'
 let auth_header=sessionStorage.getItem('auth');
 let username=null;
 let profile_sig=null;
@@ -399,4 +400,7 @@ export async function add_post(tilte,content,tags,files) {
     }catch{
         return -1;
     }
+}
+export function get_public_image(name){
+    return `${SUPABASE_URL}/posts/image/${name}`
 }
