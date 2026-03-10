@@ -66,7 +66,7 @@ async function save_recipe(){
     const tags=document.getElementById('tags-list-inner').children;
     let tags_string=[];
     for(let i=0;i<tags.length;i++){
-        tags_string+=tags[i].querySelector("DIV").innerHTML;
+        tags_string.push(tags[i].querySelector("DIV").innerHTML);
     }
     const files=[];
     for(const [id,file] of photos){

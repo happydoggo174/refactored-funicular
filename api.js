@@ -384,7 +384,9 @@ export async function add_post(tilte,content,tags,files) {
     const body=new FormData();
     body.append('tilte',tilte);
     body.append('content',content);
-    body.append('tags',tags);
+    tags.forEach((tag)=>{
+        body.append('tags',tag);
+    });
     const url=new URL(`${VERCEL_URL}/post/make`);
     url.searchParams.set('group_id',0);
     const file_data=[];
