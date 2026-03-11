@@ -58,7 +58,7 @@ function render_post(data,comments){
         <div class="row" style="margin-top: 12px;margin-bottom: 12px;">
             ${tags}
         </div>
-        <div>${DOMPurify.sanitize(data['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"]})}</div>
+        <div id="post-body"></div>
         <div class="row" style="margin-top: 12px;">
             <button class="row bottom-btn like-btn" id='like-btn'>
                 <img src="${liked?"image/like_filled.svg":"image/like.svg"}" id="like-img">
@@ -86,7 +86,10 @@ async function render_self(){
         show_dialog("error loading post");
         return false;
     }
-    document.getElementById('main-content').innerHTML=render_post(info,comments);
+    const safe_body=DOMPurify.sanitize(info['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"]});
+    const main_content=document.getElementById('main-content');
+    main_content.innerHTML=render_post(info,comments);
+    main_content.querySelector("#post-body").innerHTML=safe_body;
     return true;
 }
 function add_span_value(span,val){
