@@ -1,6 +1,6 @@
 export const GITHUB_URL='';
 export const VERCEL_URL='https://automatic-giggle-ebon.vercel.app';
-const SUPABASE_URL='https://rwsrnlqhdtdctckxrlyz.supabase.co/storage/v1/object/public/file_bucket'
+export const SUPABASE_URL='https://rwsrnlqhdtdctckxrlyz.supabase.co/storage/v1/object/public/file_bucket'
 let auth_header=sessionStorage.getItem('auth');
 let username=null;
 let profile_sig=null;
@@ -149,7 +149,7 @@ export async function get_post(){
     }
 }
 export async function get_post_detail(post_id) {
-    const url=`${VERCEL_URL}/post/detail/${post_id}?version=2`;
+    const url=`${VERCEL_URL}/post/detail/${post_id}`;
     try{
         let resp=null;
         if(auth_header==null){

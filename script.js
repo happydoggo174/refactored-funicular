@@ -1,5 +1,5 @@
 let open_menu=window.innerWidth>=670;
-import { get_user_info, VERCEL_URL,ping, is_authenticated} from "./api.js";
+import { get_user_info, VERCEL_URL,ping, is_authenticated,SUPABASE_URL} from "./api.js";
 function set_user_info(info){
     document.getElementById('nav-login-btn').style.display='none';
     const profile=document.getElementById('user-profile');
@@ -67,7 +67,6 @@ export function run_sbx(container, htmlContent) {
 
   iframe.style.width = "100%";
   iframe.style.border = "none";
-
   // Prevent same-origin access
   iframe.srcdoc = `
     <!DOCTYPE html>
@@ -75,7 +74,7 @@ export function run_sbx(container, htmlContent) {
       <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Security-Policy"
-              content="img-src ${VERCEL_URL}">
+              content="img-src ${SUPABASE_URL}">
         <style>
           body { margin: 0; font-family: sans-serif; }
         </style>
@@ -91,3 +90,8 @@ export function run_sbx(container, htmlContent) {
 document.addEventListener('DOMContentLoaded',async(evt)=>{
     setInterval(ping,360*1000);
 });
+export function escapeHTML(str) {
+    var p = document.createElement("p");
+    p.textContent = str; // Use .textContent to treat the input as plain text
+    return p.innerHTML;  // Retrieve the safely escaped HTML
+}

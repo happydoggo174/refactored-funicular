@@ -1,10 +1,8 @@
 import DOMPurify from './libs/dompurify 3.3.1.js';
 import {get_post,get_public_image} from "./api.js";
-import { load_navbar,handle_resize } from './script.js';
+import { load_navbar,handle_resize,escapeHTML } from './script.js';
 import { time_to_string } from './tool.js';
-function html_escape(text){
-    return DOMPurify.sanitize(text);
-}
+
 function load_dishes(dishes){
     let output="";
     dishes.forEach((dish)=>{
@@ -12,14 +10,14 @@ function load_dishes(dishes){
             <div class="post" id="${"dish:".concat(parseInt(dish["id"]).toString())}">
                 <div class="post-info">
                     <div class="row">
-                        <span>${DOMPurify.sanitize(dish["author"])}</span>
+                        <span>${escapeHTML(dish["author"])}</span>
                         <span>${time_to_string(parseInt(dish["time"])).concat('ago')}</span>
                     </div>
                     <div class="row">
                         <button class="cook-btn">let's cook</button>
                     </div>
                 </div>
-                <h1 class="post-tilte">${html_escape(dish['tilte'])}</h1>
+                <h1 class="post-tilte">${escapeHTML(dish['tilte'])}</h1>
                 <div class="post-frame">
                     <img src="${get_public_image(dish['image'])}">
                 </div>

@@ -1,4 +1,4 @@
-import { VERCEL_URL,add_post } from "./api.js";
+import { VERCEL_URL,add_post,SUPABASE_URL } from "./api.js";
 const photos=new Map([]);
 function generateSecureRandomHex(length) {
   // Calculate the number of bytes needed (each byte produces two hex characters)
@@ -24,11 +24,14 @@ function select_photo(evt){
         const reader=new FileReader();
         const name=file.name;
         reader.onload=function(evt){
+            const photo_id=generateSecureRandomHex(24)+'.'+name.split('.').pop();
             const image=document.createElement("IMG");
             image.src=evt.target.result;
             image.style='max-height:80vh';
+            image.id=photo_id;
             const wrapper=document.createElement("DIV");
             wrapper.style="display:flex;justify-content:center;";
+            wrapper.classList.add('image-wrapper');
             wrapper.appendChild(image)
             const paragraph=document.getElementById('paragraph-list');
             paragraph.appendChild(wrapper);
@@ -36,7 +39,6 @@ function select_photo(evt){
             div.contentEditable=true;
             div.classList.add("paragraph-content");
             paragraph.appendChild(div);
-            const photo_id=generateSecureRandomHex(24)+'.'+name.split('.').pop();
             photos.set(photo_id,file);
         }
         reader.readAsDataURL(file);
@@ -56,11 +58,12 @@ async function save_recipe(){
         if(elem.classList.contains("row") || elem.classList.contains("tags-list")){
             continue;
         }
-        if(elem.contentEditable){
-            content+=`<span>${elem.innerText}</span>`;
+        console.log(elem,elem.classList);
+        if(!elem.classList.contains('image-wrapper')){
+            content+=`<div>${elem.innerText}</div>`;
         }else{
             const photo_id=elem.querySelector('img').id;
-            content+=`<img src=${`${VERCEL_URL}/post/image/${photo_id}`}>`;
+            content+=`<img src="${`${SUPABASE_URL}/posts/image/${photo_id}`}" style="max-height:80vh;"></img>`;
         }
     }
     const tags=document.getElementById('tags-list-inner').children;

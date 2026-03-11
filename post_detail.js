@@ -1,6 +1,6 @@
 import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_public_image,
 is_authenticated,get_username,get_profile,delete_post,get_image } from "./api.js";
-import { load_navbar,handle_resize } from "./script.js";
+import { load_navbar,handle_resize,escapeHTML } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
 import DOMPurify from './libs/dompurify 3.3.1.js';
@@ -16,7 +16,7 @@ function render_post(data,comments){
     liked=data["liked"];
     disliked=data["disliked"];
     data["tags"].forEach(tag => {
-        tags=tags.concat(`<span class='tags'>${DOMPurify.sanitize(tag)}</span>`);
+        tags=tags.concat(`<span class='tags'>${escapeHTML(tag)}</span>`);
     });
     is_owner=data["deletable"]!=false;
     if(comments!=null){
@@ -26,9 +26,9 @@ function render_post(data,comments){
                 <div class="comment">
                     <div class="row" style="margin-bottom:12px;">
                         <img src="${profile}" width="30px" height="30px" style="border-radius:50%"></img>
-                        <span>${DOMPurify.sanitize(comment["user"])}</span>
+                        <span>${escapeHTML(comment["user"])}</span>
                     </div>
-                    <span>${DOMPurify.sanitize(comment["content"])}</span>
+                    <span>${escapeHTML(comment["content"])}</span>
                 </div>
             `);
         });
@@ -38,7 +38,7 @@ function render_post(data,comments){
             <img src="${get_public_image(data["author_img"])}" width="40px" height="40px" style="border-radius: 50%;">
             <div>
                 <div class="row">
-                    <span>${DOMPurify.sanitize(data['author'])}</span>
+                    <span>${escapeHTML(data['author'])}</span>
                     <span>${time_to_string(parseInt(data["time"]))+"ago"}</span>
                 </div>
             </div>
@@ -54,14 +54,11 @@ function render_post(data,comments){
                 </button>
             </div>
         </div>
-        <h1>${DOMPurify.sanitize(data['tilte'])}</h1>
+        <h1>${escapeHTML(data['tilte'])}</h1>
         <div class="row" style="margin-top: 12px;margin-bottom: 12px;">
             ${tags}
         </div>
-        <div style="display: flex;">
-            <img src="${get_public_image(data["image"][0])}" style="flex-grow: 1;max-height: 90vh;max-width: 100%;">
-        </div>
-        <span class="post-body">${data["body"]!=undefined?DOMPurify.sanitize(data["body"]):""}</span>
+        <div>${DOMPurify.sanitize(data['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"]})}</div>
         <div class="row" style="margin-top: 12px;">
             <button class="row bottom-btn like-btn" id='like-btn'>
                 <img src="${liked?"image/like_filled.svg":"image/like.svg"}" id="like-img">
@@ -114,9 +111,9 @@ async function post_comment(evt){
         new_comment.innerHTML=`
             <div class="row" style="margin-bottom:12px;">
                 <img src="${get_profile()}" width="30px" height="30px" style="border-radius:50%"></img>
-                <span>${DOMPurify.sanitize(get_username())}</span>
+                <span>${escapeHTML(get_username())}</span>
             </div>
-            <span>${DOMPurify.sanitize(content)}</span>`;
+            <span>${escapeHTML(content)}</span>`;
         document.getElementById('comment-area').appendChild(new_comment);
         document.getElementById('add-comment-area').remove();
     }catch{}
