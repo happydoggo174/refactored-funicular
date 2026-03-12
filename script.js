@@ -20,6 +20,7 @@ function set_user_info(info){
     });
 }
 export async function load_navbar(load_user=true){
+    window.addEventListener('resize',handle_resize);
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
     if(is_authenticated()){
         document.getElementById('post-btn').addEventListener('click',()=>{window.location.href="make-post.html"});

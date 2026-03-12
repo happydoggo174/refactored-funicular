@@ -1,4 +1,3 @@
-import DOMPurify from './libs/dompurify 3.3.1.js';
 import {get_post,get_public_image} from "./api.js";
 import { load_navbar,handle_resize,escapeHTML } from './script.js';
 import { time_to_string } from './tool.js';
@@ -51,4 +50,3 @@ document.addEventListener('DOMContentLoaded',async (evt)=>{
         load_dishes(dishes);
     }
 });
-document.addEventListener('resize',handle_resize)

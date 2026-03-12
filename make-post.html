@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,35 +9,74 @@
     <link rel="stylesheet" href="make-post.css">
     <script src="make_post.js" type="module"></script>
 </head>
+
 <body>
-    <input type="file" style="display: none;" id="file-input" accept=".jpg,.jpeg,.bmp,.png,.avif">
-    <div class="row">
-        <button class="paragraph-img-btn" id="photo-add-btn">
-            <img src="image/add_photo.svg" >
-            add photo
+    <section id="nav-bar" class="nav-bar">
+        <div class="row">
+            <button class="mobile-btn" id="menu_btn">
+                <img src="image/menu.svg">
+            </button>
+            <button>
+                <img src="image/home.svg" class="home-btn">
+            </button>
+        </div>
+        <input type="text" placeholder="search" class="search-bar">
+        <div class="row">
+            <button class="nav-login-btn" onclick="window.location.href='login.html'" id="nav-login-btn">login</button>
+            <span style="display: flex;align-items: center;" id="nav-username"></span>
+            <img src="image/user_default.svg" alt="" id="user-profile" width="40px" max-height="100%"
+                style="border-radius: 50%;">
+        </div>
+    </section>
+
+    <div style="height: 50px;">
+        <!--placeholder to prevent the nav bar from clipping into content-->
+    </div>
+    <div class="side-bar" id="side-bar">
+        <button class="side-btn favorite-btn">
+            favorite
+            <img src="image/favorite.svg" id="favorite-img">
+        </button>
+        <button class="side-btn discoveries-btn">
+            discoveries
+            <img src="image/star.svg" id="discoveries-img">
+        </button>
+        <button class="side-btn" id="post-btn">
+            post
+            <img src="image/add.svg" id="post-img">
         </button>
     </div>
-    <div id="paragraph-list">
-        <div class="row" style="justify-content: center;" id="post-tilte">
-            <textarea placeholder="your tilte here" id="tilte-banner" rows="1" class="hidden-field"></textarea>
+    <input type="file" style="display: none;" id="file-input" accept=".jpg,.jpeg,.bmp,.png,.avif">
+    <div class="main-content">
+        <div class="row">
+            <button class="paragraph-img-btn" id="photo-add-btn">
+                <img src="image/add_photo.svg">
+                add photo
+            </button>
         </div>
-        <div class="tags-list" id="tags-row">
-            <span>tags:</span>
-            <div id="tags-list-inner">
+        <div id="paragraph-list">
+            <div class="row" style="justify-content: center;" id="post-tilte">
+                <textarea placeholder="your tilte here" id="tilte-banner" rows="1" class="hidden-field"></textarea>
+            </div>
+            <div class="tags-list" id="tags-row">
+                <span>tags:</span>
+                <div id="tags-list-inner">
+
+                </div>
+                <button id="add-tag-btn">
+                    <img src="image/add_black.svg">
+                </button>
 
             </div>
-            <button id="add-tag-btn">
-                <img src="image/add_black.svg">
-            </button>
-
+            <div class="paragraph-content" contenteditable="true">
+                your recipe here
+            </div>
         </div>
-        <div class="paragraph-content" contenteditable="true">
-            your recipe here
+        <div class="row" id="action-row">
+            <button id="upload-btn">upload</button>
+            <button id="cancel-btn">cancel</button>
         </div>
-    </div>
-    <div class="row" id="action-row">
-        <button id="upload-btn">upload</button>
-        <button id="cancel-btn">cancel</button>
     </div>
 </body>
+
 </html>

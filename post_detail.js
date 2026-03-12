@@ -86,7 +86,8 @@ async function render_self(){
         show_dialog("error loading post");
         return false;
     }
-    const safe_body=DOMPurify.sanitize(info['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"],RETURN_DOM:true});
+    const safe_body=DOMPurify.sanitize(info['body'],{FORBID_ATTR:["id","class","name"],
+    FORBID_TAGS:["svg","math","form"],RETURN_DOM:true});
     const main_content=document.getElementById('main-content');
     main_content.innerHTML=render_post(info,comments);
     main_content.replaceChild(safe_body,main_content.querySelector('#post-body'));
@@ -231,4 +232,3 @@ document.addEventListener("DOMContentLoaded",async (evt)=>{
     init_menu();
     await load_navbar();
 });
-document.addEventListener('resize',handle_resize);

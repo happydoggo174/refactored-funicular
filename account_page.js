@@ -150,7 +150,6 @@ function setup_eventListener(){
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
     document.getElementById('change-username-btn').addEventListener('click',change_username);
     document.getElementById('change-description-btn').addEventListener('click',change_description);
-    window.addEventListener('resize',handle_resize);
 }
 document.addEventListener('DOMContentLoaded',async (evt)=>{
     await load_navbar(false);

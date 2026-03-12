@@ -1,4 +1,6 @@
 import { VERCEL_URL,add_post,SUPABASE_URL } from "./api.js";
+import {load_navbar} from "./script.js";
+import {show_dialog} from './tool.js';
 const photos=new Map([]);
 function generateSecureRandomHex(length) {
   // Calculate the number of bytes needed (each byte produces two hex characters)
@@ -18,28 +20,40 @@ function generateSecureRandomHex(length) {
   // Trim to the desired length if necessary
   return hexString.slice(0, length);
 }
+function create_photo_wrapper(evt,file,name){
+    const photo_id=generateSecureRandomHex(24)+'.'+name.split('.').pop();
+    const image=document.createElement("IMG");
+    image.src=evt.target.result;
+    image.style='max-height:80vh';
+    image.id=photo_id;
+    const close_btn=document.createElement('button');
+    close_btn.innerHTML='<img src="image/close_black.svg"></img>';
+    close_btn.style='position:absolute;right:0;';
+    close_btn.addEventListener('click',()=>{
+        document.getElementById('paragraph-list').removeChild(wrapper);
+        photos.delete(photo_id);
+    });
+    const wrapper=document.createElement("DIV");
+    wrapper.style="display:flex;justify-content:center;";
+    wrapper.classList.add('image-wrapper');
+    wrapper.appendChild(image);
+    wrapper.appendChild(close_btn);
+    photos.set(photo_id,file);
+    return wrapper;
+}
 function select_photo(evt){
     const file=evt.target.files[0];
     if(file){
         const reader=new FileReader();
         const name=file.name;
         reader.onload=function(evt){
-            const photo_id=generateSecureRandomHex(24)+'.'+name.split('.').pop();
-            const image=document.createElement("IMG");
-            image.src=evt.target.result;
-            image.style='max-height:80vh';
-            image.id=photo_id;
-            const wrapper=document.createElement("DIV");
-            wrapper.style="display:flex;justify-content:center;";
-            wrapper.classList.add('image-wrapper');
-            wrapper.appendChild(image)
+            const wrapper=create_photo_wrapper(evt,file,name);
             const paragraph=document.getElementById('paragraph-list');
             paragraph.appendChild(wrapper);
             const div=document.createElement("DIV");
             div.contentEditable=true;
             div.classList.add("paragraph-content");
             paragraph.appendChild(div);
-            photos.set(photo_id,file);
         }
         reader.readAsDataURL(file);
     }
@@ -49,8 +63,7 @@ function add_photo(){
     file_input.click();
     file_input.addEventListener('input',select_photo);
 }
-async function save_recipe(){
-    const tilte=document.getElementById('tilte-banner').value;
+function serialize_content(){
     const list=document.getElementById("paragraph-list").children;
     let content='';
     for(let i=0;i<list.length;i++){
@@ -58,7 +71,6 @@ async function save_recipe(){
         if(elem.classList.contains("row") || elem.classList.contains("tags-list")){
             continue;
         }
-        console.log(elem,elem.classList);
         if(!elem.classList.contains('image-wrapper')){
             content+=`<div>${elem.innerText}</div>`;
         }else{
@@ -66,6 +78,11 @@ async function save_recipe(){
             content+=`<img src="${`${SUPABASE_URL}/posts/image/${photo_id}`}" style="max-height:80vh;"></img>`;
         }
     }
+    return content;
+}
+async function save_recipe(){
+    const tilte=document.getElementById('tilte-banner').value;
+    let content=serialize_content();
     const tags=document.getElementById('tags-list-inner').children;
     let tags_string=[];
     for(let i=0;i<tags.length;i++){
@@ -77,7 +94,10 @@ async function save_recipe(){
     }
     const stat=(await add_post(tilte,content,tags_string,files));
     if(stat==200){
-        window.location.href=`index.html`;
+        return window.location.href=`index.html`;
+    }
+    if(stat==501){
+        return show_dialog("the file format is not supported");
     }
 }
 function add_tags(){
@@ -96,8 +116,9 @@ function add_tags(){
     tags.classList.add("tag");
     document.getElementById("tags-list-inner").appendChild(tags);
 }
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',async ()=>{
     document.getElementById('photo-add-btn').addEventListener('click',add_photo);
     document.getElementById('upload-btn').addEventListener('click',save_recipe);
     document.getElementById('add-tag-btn').addEventListener('click',add_tags);
+    await load_navbar();
 });
