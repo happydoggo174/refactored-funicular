@@ -86,10 +86,10 @@ async function render_self(){
         show_dialog("error loading post");
         return false;
     }
-    const safe_body=DOMPurify.sanitize(info['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"]});
+    const safe_body=DOMPurify.sanitize(info['body'],{FORBID_ATTR:["id","class"],FORBID_TAGS:["svg","math"],RETURN_DOM:true});
     const main_content=document.getElementById('main-content');
     main_content.innerHTML=render_post(info,comments);
-    main_content.querySelector("#post-body").innerHTML=safe_body;
+    main_content.replaceChild(safe_body,main_content.querySelector('#post-body'));
     return true;
 }
 function add_span_value(span,val){
