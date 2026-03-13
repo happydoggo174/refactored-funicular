@@ -171,7 +171,7 @@ export async function get_post_detail(post_id) {
         return null;
     }
 }
-function get_post_id(){
+export function get_post_id(){
     return (new URL(window.location.href)).searchParams.get('post_id');
 }
 export async function like_post(){
@@ -345,22 +345,36 @@ export async function create_variant(){
         return null;
     }
 }
-export async function edit_post({tilte=null,content=null,tags=null,images=null}) {
+export async function edit_post({tilte=null,content=null,tags=null,drop_file=null,extra_file=null}) {
     const post_id=get_post_id();
     if(post_id==null || auth_header==null){return false;}
     const body=new FormData();
+    const url=new URL(`${VERCEL_URL}/post/edit`);
+    url.searchParams.set('post_id',post_id);
     try{
         if(tilte){
-        body.append("tilte",tilte);
+            body.append("tilte",tilte);
         }
         if(content){
             body.append("content",content);
         }
         if(tags){
-            body.append(tags);
+            for(let i=0;i<tags.length;i++){
+                body.append("tags",tags[i]);
+            }
+            console.log(tags);
         }
-        if(images){
-            body.append(images);
+        if(drop_file){
+            for(let i=0;i<drop_file.length;i++){
+                body.append("drop_file",drop_file[i]);
+            }
+            console.log("dropping",drop_file);
+        }
+        if(extra_file){
+            for(let i=0;i<extra_file.length;i++){
+                body.append("extra_file",extra_file[i]);
+            }
+            console.log('extra',extra_file);
         }
         let resp=await fetch(url,{
             method:"PUT",
@@ -375,7 +389,8 @@ export async function edit_post({tilte=null,content=null,tags=null,images=null})
             });
         }
         return resp.ok;
-    }catch{
+    }catch(e){
+        console.log(e);
         return false;
     }
 }

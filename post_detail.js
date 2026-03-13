@@ -1,5 +1,5 @@
 import { dislike_post, like_post,get_post_detail,get_post_comments,add_post_comments, VERCEL_URL,get_public_image,
-is_authenticated,get_username,get_profile,delete_post,get_image } from "./api.js";
+is_authenticated,get_username,get_profile,delete_post,get_image,get_post_id } from "./api.js";
 import { load_navbar,handle_resize,escapeHTML } from "./script.js";
 import { show_dialog,time_to_string } from "./tool.js";
 
@@ -47,6 +47,7 @@ function render_post(data,comments){
                 <div id="option-menu">
                     <button>create variant</button>
                     <button id="post-delete-btn">delete post</button>
+                    <button id="post-edit-btn">edit post</button>
                     <button>report as spam</button>
                 </div>
                 <button id="menu-btn">
@@ -203,12 +204,18 @@ async function handle_delete_post(evt){
     }
     document.location.href="index.html";
 }
+function handle_edit_post(){
+    window.location.href=`make-post.html?post_id=${get_post_id()}`;
+}
 function init_menu(){
     const delete_btn=document.getElementById('post-delete-btn');
+    const edit_btn=document.getElementById('post-edit-btn');
     if(is_owner){
         delete_btn.addEventListener('click',handle_delete_post);
+        edit_btn.addEventListener('click',handle_edit_post);
     }else{
         delete_btn.style.display='none';
+        edit_btn.style.display='none';
     }
 }
 function show_more(){ 
