@@ -298,13 +298,13 @@ export async function edit_post({tilte=null,content=null,tags=null,drop_file=nul
         }
         if(drop_file){
             for(let i=0;i<drop_file.length;i++){
-                body.append("drop_file",drop_file[i]);
+                body.append("drop_file",drop_file[i][0],drop_file[i][1]);
             }
             console.log("dropping",drop_file);
         }
         if(extra_file){
             for(let i=0;i<extra_file.length;i++){
-                body.append("extra_file",extra_file[i]);
+                body.append("extra_file",extra_file[i][0],extra_file[i][1]);
             }
             console.log('extra',extra_file);
         }
@@ -365,13 +365,13 @@ export async function make_pr({post_id,message=null,tilte=null,content=null,tags
         }
         if(drop_file){
             for(let i=0;i<drop_file.length;i++){
-                body.append("drop_file",drop_file[i]);
+                body.append("drop_file",drop_file[i][0]);
             }
             console.log("dropping",drop_file);
         }
         if(extra_file){
             for(let i=0;i<extra_file.length;i++){
-                body.append("extra_file",extra_file[i]);
+                body.append("extra_file",extra_file[i][0],extra_file[i][1]);
             }
             console.log('extra',extra_file);
         }
