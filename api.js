@@ -126,8 +126,11 @@ export async function get_post(){
         return null;
     }
 }
-export async function get_post_detail(post_id) {
-    const url=`${VERCEL_URL}/post/detail/${post_id}`;
+export async function get_post_detail(post_id,mini=false) {
+    const url=new URL(`${VERCEL_URL}/post/detail/${post_id}`);
+    if(mini){
+        url.searchParams.set('mini',true);
+    }
     try{
         let resp=null;
         if(auth_header==null){
@@ -386,7 +389,7 @@ export async function make_pr({post_id,message=null,tilte=null,content=null,tags
 export async function delete_pr(pr_id) {
     if(auth_header==null){return false;}
     try{
-        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/edit?pr_id=${pr_id}`,{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/drop?pr_id=${pr_id}`,{
             method:"DELETE",
             headers:auth_header
         });
@@ -406,10 +409,19 @@ export async function accept_pr(pr_id) {
 }
 export async function get_pr(post_id) {
     try{
-        const resp=await fetch(`${VERCEL_URL}/pr/?post_id=${post_id}`);
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/home?post_id=${post_id}`);
         if(!resp.ok){return null;}
         return await resp.json();
     }catch{
         return null;
     }    
+}
+export async function get_pr_detail(pr_id) {
+    try{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/detail?pr_id=${pr_id}`);
+        if(!resp.ok){return null;}
+        return await resp.json();
+    }catch{
+        return null;
+    }
 }

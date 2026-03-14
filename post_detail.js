@@ -48,6 +48,7 @@ function render_post(data,comments){
                     <button>create variant</button>
                     <button id="post-delete-btn">delete post</button>
                     <button id="post-edit-btn">edit post</button>
+                    <button id="contribute-btn">contribute</button>
                     <button>report as spam</button>
                 </div>
                 <button id="menu-btn">
@@ -207,15 +208,25 @@ async function handle_delete_post(evt){
 function handle_edit_post(){
     window.location.href=`make-post.html?post_id=${get_post_id()}`;
 }
+function contribute(){
+    window.location.href=`make-post.html?post_id=${get_post_id()}&contribute=true`;
+}
 function init_menu(){
     const delete_btn=document.getElementById('post-delete-btn');
     const edit_btn=document.getElementById('post-edit-btn');
+    const contribute_btn=document.getElementById('contribute-btn');
     if(is_owner){
         delete_btn.addEventListener('click',handle_delete_post);
         edit_btn.addEventListener('click',handle_edit_post);
+        contribute_btn.style.display='none';
     }else{
         delete_btn.style.display='none';
         edit_btn.style.display='none';
+        if(is_authenticated()){
+            contribute_btn.addEventListener('click',contribute);
+        }else{
+            contribute_btn.style.display='none';
+        }
     }
 }
 function show_more(){ 

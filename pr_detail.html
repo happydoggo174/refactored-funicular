@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="script.js" type="module"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="edit_request.css">
-    <script src="edit_request.js" type="module"></script>
+    <title>food social</title>
+    <link href="style.css" rel="stylesheet"></link>
+    <script src="pr_detail.js" type="module"></script>
+    <link rel="stylesheet" href="pr_detail.css">
 </head>
 <body>
     <section id="nav-bar" class="nav-bar">
@@ -45,8 +44,21 @@
         </button>
     </div>
     <div class="main-content">
-        <h1 id="main-banner"></h1>
-        <div id="pr-list">
+        <h1 id="pr-message"></h1>
+        <div id="tilte-new" style="display: none;"></div>
+        <div id="tags-new" style="display: none;"></div>
+        <div style="display: none;" id="body-banner">body</div>
+        <div id="body-div" style="display: none;">
+            <div class="row" style="margin-bottom: 14px;">
+                <button id="old-body-btn" class="body-btn">old</button>
+                <button id="new-body-btn" class="body-btn">new</button>
+            </div>
+            <div id="old-body"></div>
+            <div id="new-body" style="display: none;"></div>
+        </div>
+        <div class="btn-row">
+            <button class="action-btn" id="approve-btn">approve</button>
+            <button class="action-btn" id="reject-btn">reject</button>
         </div>
     </div>
 </body>

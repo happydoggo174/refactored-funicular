@@ -1,12 +1,12 @@
-import { VERCEL_URL,add_post,SUPABASE_URL,get_post_detail, edit_post } from "./api.js";
+import { VERCEL_URL,add_post,SUPABASE_URL,get_post_detail, edit_post,make_pr, get_post_id } from "./api.js";
 import {load_navbar,escapeHTML} from "./script.js";
 import {show_dialog} from './tool.js';
 import DOMPurify from "./libs/dompurify 3.3.1.js";
 let tilte_changed=false;
 let content_changed=false;
 let tags_changed=false;
-let file_changed=false;
 let post_id=null;
+let is_contribute=false;
 const drop_file=new Map([]);
 const photos=new Map([]);
 function generateSecureRandomHex(length) {
@@ -37,7 +37,6 @@ function create_photo_wrapper(evt,file,name){
     close_btn.innerHTML='<img src="image/close_black.svg"></img>';
     close_btn.style='position:absolute;right:0;';
     close_btn.addEventListener('click',()=>{
-        file_changed=true;
         document.getElementById('paragraph-list').removeChild(wrapper);
         photos.delete(photo_id);
     });
@@ -52,7 +51,6 @@ function create_photo_wrapper(evt,file,name){
 function select_photo(evt){
     const file=evt.target.files[0];
     if(file){
-        file_changed=true;
         const reader=new FileReader();
         const name=file.name;
         reader.onload=function(evt){
@@ -125,7 +123,13 @@ async function save_recipe_edit(){
             extra.push([file,id]);
         }
     }
-    if((await edit_post({tilte:tilte,content:content,tags:tags,drop_file:dropped,extra_file:extra}))){
+    let resp=false;
+    if(is_contribute){
+        resp=await make_pr({post_id:post_id,tilte:tilte,content:content,tags:tags,drop_file:dropped,extra_file:extra});
+    }else{
+        resp=await edit_post({tilte:tilte,content:content,tags:tags,drop_file:dropped,extra_file:extra});
+    }
+    if(resp){
         window.location.href='index.html';
     }
 }
@@ -218,10 +222,14 @@ async function deserialize_post(){
 document.addEventListener('DOMContentLoaded',async ()=>{
     const url=new URL(window.location.href);
     post_id=url.searchParams.get('post_id');
+    is_contribute=url.searchParams.get('contribute');
+    const upload_btn=document.getElementById('upload-btn');
     if(post_id){
-        const upload_btn=document.getElementById('upload-btn');
         upload_btn.innerText='save';
         await deserialize_post();
+    }
+    if(is_contribute){
+        upload_btn.innerText='submit change';
     }
     document.getElementById('upload-btn').addEventListener('click',save_recipe);
     document.getElementById('photo-add-btn').addEventListener('click',add_photo);

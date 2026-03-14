@@ -1,0 +1,64 @@
+#pr-message{
+    display: block;
+    text-align: center;
+}
+#tilte-new{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+#tags-new{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+.tags{
+    padding: 4px;
+    background-color: wheat;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.btn-row{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    margin-top: 14px;
+}
+.action-btn{
+    flex-grow: 1;
+    padding: 8px;
+    margin-right: 12px;
+    border-radius: 12px;
+}
+#approve-btn{
+    background-color: green;
+    transition: background-color 0.25s ease-in-out;
+}
+#approve-btn:hover{
+    background-color: rgb(6,207,60);
+}
+#reject-btn{
+    background-color: red;
+    transition: background-color 0.25s ease-in-out;
+}
+#reject-btn:hover{
+    background-color: rgb(242,31,70);
+}
+#body-banner{
+    text-align: center;
+    font-weight: bold;
+    font-size: 28px;
+    margin-top: 14px;
+}
+.body-btn{
+    padding: 8px;
+    border-radius: 12px;
+}
+#body-div{
+    display: flex;
+    flex-direction: column;
+}
