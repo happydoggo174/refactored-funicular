@@ -41,18 +41,20 @@ async function check_challenge(resp){
 }
 export async function ping() {
     if(auth_header!=null){
-        const resp=await fetch(`${VERCEL_URL}/auth/ping`,{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/auth/ping`,{
             method:"POST",
             headers:auth_header
         });
-        if(await check_challenge(resp)){
-            await fetch(`${VERCEL_URL}/auth/ping`,{
-                method:"POST",
-                headers:auth_header
-            });
-        }
     }
 }
+/** @type {typeof fetch} */
+export const FetchCaptcha = async (input, init) => {
+  const res = await fetch(input, init);
+  if(await check_challenge(res)){
+    return await fetch(input,init);
+  }
+  return res;
+};
 export function get_username(){return username;}
 export function get_profile(){return profile_sig;}
 export function is_authenticated(){return auth_header!=null;}
@@ -62,22 +64,13 @@ export async function check_login(username,password){
     form_data.append("password",password);
     let resp=null;
     try{
-        resp=await fetch(
+        resp=await FetchCaptcha(
             `${VERCEL_URL}/auth/login`,
             {
                 method:"POST",
                 body:form_data
             }
         );
-        if(await check_challenge(resp)){
-             resp=await fetch(
-            `${VERCEL_URL}/auth/login`,
-            {
-                method:"POST",
-                body:form_data
-            }
-        );
-        }
     }catch{
         return false;
     }
@@ -98,19 +91,11 @@ export async function register(username,password,description,profile){
     }
     form_data.append("description","nothing to see here");
     try{
-        let resp=await fetch(`${VERCEL_URL}/auth/register`,{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/auth/register`,{
             method:"POST",
             body:form_data
         });
-        if(await check_challenge(resp)){
-            resp=await fetch(`${VERCEL_URL}/auth/register`,{
-                method:"POST",
-                body:form_data
-            });
-        }
-        if(!resp.ok){
-            return false;
-        }
+        return resp.ok;
     }catch{
         return false;
     }
@@ -121,10 +106,7 @@ export async function get_user_info(){
         return null;
     }
     try{
-        let resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
-        if(await check_challenge(resp)){
-            resp=await fetch(`${VERCEL_URL}/user/info`,{headers:auth_header});
-        }
+        const resp=await FetchCaptcha(`${VERCEL_URL}/user/info`,{headers:auth_header});
         if(!resp.ok){return null;}
         const r=await resp.json();
         profile_sig=get_image(r["profile"],0);
@@ -134,12 +116,8 @@ export async function get_user_info(){
     }
 }
 export async function get_post(){
-    let resp=null;
     try{
-        resp=await fetch(`${VERCEL_URL}/post/home`);
-        if(await check_challenge(resp)){
-            resp=await fetch(`${VERCEL_URL}/post/home`);
-        }
+        const resp=await FetchCaptcha(`${VERCEL_URL}/post/home`);
         if(!resp.ok){
             return null;
         }
@@ -153,16 +131,9 @@ export async function get_post_detail(post_id) {
     try{
         let resp=null;
         if(auth_header==null){
-            resp=await fetch(url);
+            resp=await FetchCaptcha(url);
         }else{
-            resp=await fetch(url,{headers:auth_header});
-        }
-        if(await check_challenge(resp)){
-            if(auth_header==null){
-                resp=await fetch(url);
-            }else{
-                resp=await fetch(url,{headers:auth_header});
-            }
+            resp=await FetchCaptcha(url,{headers:auth_header});
         }
         if(!resp.ok){return null;}
         return await resp.json();
@@ -180,11 +151,8 @@ export async function like_post(){
     const url=new URL(VERCEL_URL.concat("/post/like"));
     url.searchParams.append('post_id',post_id);
     try{
-        let resp=await fetch(url,{method:"POST",headers:auth_header});
-        if(await check_challenge(resp)){
-            resp=await fetch(url,{method:"POST",headers:auth_header});
-        }
-        if(!resp.ok){return false;}
+        const resp=await FetchCaptcha(url,{method:"POST",headers:auth_header});
+        return resp.ok;
     }catch{
         return false;
     }
@@ -196,11 +164,8 @@ export async function dislike_post(){
     const url=new URL(VERCEL_URL.concat("/post/dislike"));
     url.searchParams.append('post_id',post_id);
     try{
-        let resp=await fetch(url,{method:"POST",headers:auth_header});
-        if(await check_challenge(resp)){
-            resp=await fetch(url,{method:"POST",headers:auth_header});
-        }
-        if(!resp.ok){return false;}
+        const resp=await FetchCaptcha(url,{method:"POST",headers:auth_header});
+        return resp.ok;
     }catch{
         return false;
     }
@@ -211,10 +176,7 @@ export async function get_post_comments() {
     const url=new URL(VERCEL_URL.concat("/post/comment"));
     url.searchParams.append('post_id',post_id);
     try{
-        let resp=await fetch(url);
-        if(await check_challenge(resp)){
-            resp=await fetch(url);
-        }
+        const resp=await FetchCaptcha(url);
         if(!resp.ok){
             return null;
         }
@@ -231,7 +193,7 @@ export async function add_post_comments(content) {
     const form_data=new FormData();
     form_data.append('content',content);
     try{
-        let resp=await fetch(
+        const resp=await FetchCaptcha(
             url,
             {
                 method:"POST",
@@ -239,19 +201,7 @@ export async function add_post_comments(content) {
                 headers:auth_header
             }
         );
-        if(await check_challenge(resp)){
-            resp=await fetch(
-                url,
-                {
-                    method:"POST",
-                    body:form_data,
-                    headers:auth_header
-                }
-            );
-        }
-        if(!resp.ok){
-            return false;
-        }
+        return resp.ok;
     }catch(e){
         console.log("error posting comment",e);
         return false;
@@ -270,20 +220,12 @@ export async function delete_post(post_id=null) {
     const url=new URL(`${VERCEL_URL}/post/remove`);
     url.searchParams.set('post_id',post_id);
     try{
-        let resp=await fetch(
+        const resp=await FetchCaptcha(
             url,{
                 method:"DELETE",
                 headers:auth_header
             }
         );
-        if(await check_challenge(resp)){
-            resp=await fetch(
-                url,{
-                    method:"DELETE",
-                    headers:auth_header
-                }
-            );
-        }
         return resp.ok;
     }catch{
         return false;
@@ -305,18 +247,11 @@ export async function edit_user_info({username=null,password=null,profile=null,d
         if(description!=null){
             body.set('description',description);
         }
-        let resp=await fetch(`${VERCEL_URL}/user/info`,{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/user/info`,{
             method:"PUT",
             headers:auth_header,
             body:body
         });
-        if(await check_challenge(resp)){
-            resp=await fetch(`${VERCEL_URL}/user/info`,{
-                method:"PUT",
-                headers:auth_header,
-                body:body
-            });
-        }
         return resp.ok;
     }catch{
         return false;
@@ -329,16 +264,10 @@ export async function create_variant(){
     try{
         const url=new URL(`${VERCEL_URL}/post/fork`);
         url.searchParams.set("post_id",post_id);
-        let resp=await fetch(url,{
+        const resp=await FetchCaptcha(url,{
             method:"POST",
             headers:auth_header            
         });
-        if(await check_challenge(resp)){
-            resp=await fetch(url,{
-                method:"POST",
-                headers:auth_header            
-            });
-        }
         if(!resp.ok){return null;}
         return await resp.text();
     }catch{
@@ -376,18 +305,11 @@ export async function edit_post({tilte=null,content=null,tags=null,drop_file=nul
             }
             console.log('extra',extra_file);
         }
-        let resp=await fetch(url,{
+        const resp=await FetchCaptcha(url,{
             method:"PUT",
             body:body,
             headers:auth_header
         });
-        if(await check_challenge(resp)){
-            resp=await fetch(url,{
-                method:"PUT",
-                body:body,
-                headers:auth_header
-            });
-        }
         return resp.ok;
     }catch(e){
         console.log(e);
@@ -404,15 +326,11 @@ export async function add_post(tilte,content,tags,files) {
     });
     const url=new URL(`${VERCEL_URL}/post/make`);
     url.searchParams.set('group_id',0);
-    const file_data=[];
     for(let i=0;i<files.length;i++){
         body.append('image',files[i][0],files[i][1]);
     }
     try{
-        let resp=await fetch(url,{method:"POST",body:body,headers:auth_header});
-        if(await check_challenge(resp)){
-            resp=await fetch(url,{method:"POST",body:body,headers:auth_header});
-        }
+        const resp=await FetchCaptcha(url,{method:"POST",body:body,headers:auth_header});
         return resp.status;
     }catch{
         return -1;
@@ -420,4 +338,86 @@ export async function add_post(tilte,content,tags,files) {
 }
 export function get_public_image(name){
     return `${SUPABASE_URL}/posts/image/${name}`
+}
+export async function get_pr(post_id) {
+    try{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/?post_id=${post_id}`);
+        return await resp.json();
+    }catch{
+        return null;
+    }
+}
+export async function make_pr({post_id,message=null,tilte=null,content=null,tags=null,drop_file=null,extra_file=null}) {
+    if(post_id==null || auth_header==null){return false;}
+    const body=new FormData();
+    const url=new URL(`${VERCEL_URL}/pr/make`);
+    url.searchParams.set('post_id',post_id);
+    try{
+        if(message){
+            body.append('message',message);
+        }
+        if(tilte){
+            body.append("tilte",tilte);
+        }
+        if(content){
+            body.append("content",content);
+        }
+        if(tags){
+            for(let i=0;i<tags.length;i++){
+                body.append("tags",tags[i]);
+            }
+            console.log(tags);
+        }
+        if(drop_file){
+            for(let i=0;i<drop_file.length;i++){
+                body.append("drop_file",drop_file[i]);
+            }
+            console.log("dropping",drop_file);
+        }
+        if(extra_file){
+            for(let i=0;i<extra_file.length;i++){
+                body.append("extra_file",extra_file[i]);
+            }
+            console.log('extra',extra_file);
+        }
+        const resp=await FetchCaptcha(url,{
+            method:"POST",
+            body:body,
+            headers:auth_header
+        });
+        return resp.ok;
+    }catch(e){
+        console.log(e);
+        return false;
+    }
+}
+export async function delete_pr(pr_id) {
+    if(auth_header==null){return false;}
+    try{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/edit?pr_id=${pr_id}`,{
+            method:"DELETE",
+            headers:auth_header
+        });
+        return resp.ok;
+    }catch{
+        return false;
+    }
+}
+export async function accept_pr(pr_id) {
+    if(auth_header==null){return false;}
+    try{
+        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/accept?pr_id=${pr_id}`,{method:"POST"});
+        return resp.ok;
+    }catch{
+        return false;
+    }
+}
+export async function get_pr(post_id) {
+    try{
+        const resp=await fetch(`${VERCEL_URL}/pr/?post_id=${post_id}`);
+        if(!resp.ok){return null;}
+        return await resp.json();
+    }catch{
+        return null;
+    }    
 }
