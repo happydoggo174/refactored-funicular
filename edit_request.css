@@ -10,3 +10,19 @@
     border-bottom: 1px solid black;
     margin-bottom: 12px;
 }
+#request-edit-btn{
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid black;
+    box-shadow: 0 0 0 black;
+    background-color: green;
+    color: white;
+    gap:12px;
+    align-items: center;
+    display: flex;
+    transition: background-color 0.25s ease-in-out;
+}
+#request-edit-btn:hover{
+    background-color: rgb(16,204,60);
+}

@@ -1,5 +1,5 @@
 import {escapeHTML, load_navbar} from './script.js'
-import { accept_pr, get_post_detail, get_pr_detail, delete_pr} from './api.js';
+import { accept_pr, get_post_detail, get_pr_detail, delete_pr,get_username} from './api.js';
 import DOMPurify from './libs/dompurify 3.3.1.js'
 function diff_tags(old,changed){
     const old_tags=new Set(old);
@@ -30,10 +30,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const detail=await get_pr_detail(pr_id);
     if(detail==null){return;}
     document.getElementById('approve-btn').addEventListener('click',async()=>{
-        await accept_pr(pr_id);
+        if(await accept_pr(pr_id)){
+            history.go(-1);
+        }
     });
     document.getElementById('reject-btn').addEventListener('click',async()=>{
-        await delete_pr(pr_id);
+        if(await delete_pr(pr_id)){
+            history.go(-1);
+        }
     });
     const old_data=await get_post_detail(detail['post_id'],true);
     if(old_data==null){return;}

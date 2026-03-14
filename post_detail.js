@@ -49,6 +49,7 @@ function render_post(data,comments){
                     <button id="post-delete-btn">delete post</button>
                     <button id="post-edit-btn">edit post</button>
                     <button id="contribute-btn">contribute</button>
+                    <button id="edit-view-btn">view edit request</button>
                     <button>report as spam</button>
                 </div>
                 <button id="menu-btn">
@@ -237,6 +238,9 @@ function show_more(){
         menu.style.display='none';
     }
 }
+function view_edit_request(){
+    window.location.href=`edit_request.html?post_id=${parseInt(get_post_id())}`;
+}
 document.addEventListener("DOMContentLoaded",async (evt)=>{
     if(!await render_self()){
         return;
@@ -246,6 +250,7 @@ document.addEventListener("DOMContentLoaded",async (evt)=>{
     like_btn.addEventListener('click',handle_like);
     dislike_btn.addEventListener('click',handle_dislike);
     document.getElementById('menu-btn').addEventListener('click',show_more);
+    document.getElementById('edit-view-btn').addEventListener('click',view_edit_request);
     init_comment();
     init_menu();
     await load_navbar();

@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const pr=await get_pr(post_id);
     if(pr==null){return;}
     const post=await get_post_detail(post_id);
-    document.getElementById('main-banner').innerText=`change request for ${post['tilte']}`
+    document.getElementById('main-banner').innerText=`edit request for ${post['tilte']}`
+    document.getElementById('request-edit-btn').addEventListener('click',()=>{
+        window.location.href=`make-post.html?post_id=${post_id}&contribute=true`;
+    })
     pr.forEach(req => {
         const node=document.createElement('DIV');
         node.classList.add('pull-request');
