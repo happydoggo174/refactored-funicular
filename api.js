@@ -339,14 +339,6 @@ export async function add_post(tilte,content,tags,files) {
 export function get_public_image(name){
     return `${SUPABASE_URL}/posts/image/${name}`
 }
-export async function get_pr(post_id) {
-    try{
-        const resp=await FetchCaptcha(`${VERCEL_URL}/pr/?post_id=${post_id}`);
-        return await resp.json();
-    }catch{
-        return null;
-    }
-}
 export async function make_pr({post_id,message=null,tilte=null,content=null,tags=null,drop_file=null,extra_file=null}) {
     if(post_id==null || auth_header==null){return false;}
     const body=new FormData();
