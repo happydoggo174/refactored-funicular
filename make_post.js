@@ -235,5 +235,6 @@ document.addEventListener('DOMContentLoaded',async ()=>{
     document.getElementById('photo-add-btn').addEventListener('click',add_photo);
     document.getElementById('add-tag-btn').addEventListener('click',add_tags);
     document.getElementById('tilte-banner').addEventListener('input',()=>{tilte_changed=true;});
+    document.getElementById('cancel-btn').addEventListener('click',()=>{history.go(-1)});
     await load_navbar();
 });

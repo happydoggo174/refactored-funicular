@@ -22,6 +22,8 @@ function set_user_info(info){
 export async function load_navbar(load_user=true){
     window.addEventListener('resize',handle_resize);
     document.getElementById('menu_btn').addEventListener('click',toggle_sidebar);
+    const home=document.getElementsByClassName('home-btn').item(0);
+    if(home){home.addEventListener('click',()=>{window.location.href='index.html'})}
     if(is_authenticated()){
         document.getElementById('post-btn').addEventListener('click',()=>{window.location.href="make-post.html"});
     }else{
